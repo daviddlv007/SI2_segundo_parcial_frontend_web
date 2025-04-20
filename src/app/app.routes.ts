@@ -28,7 +28,8 @@ export const routes: Routes = [
   { 
     path: '',
     component: MainLayoutComponent,
-    canActivate: [AuthGuard],
+    // Desactivación de autenticación
+    // canActivate: [AuthGuard],
     children: [
       { path: 'persona', component: PersonaComponent },
       { path: 'persona-create', component: PersonaCreateComponent },
