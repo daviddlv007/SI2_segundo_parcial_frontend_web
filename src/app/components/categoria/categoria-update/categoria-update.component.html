@@ -1,0 +1,46 @@
+<div class="form-container">
+    <h2>Actualizar Categoría</h2>
+  
+    <form (ngSubmit)="actualizarCategoria()" #categoriaForm="ngForm">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input 
+          id="nombre" 
+          [(ngModel)]="categoria.nombre" 
+          name="nombre" 
+          placeholder="Nombre" 
+          required 
+          minlength="3"
+          #nombre="ngModel" 
+          class="form-control"
+        />
+        <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="error-message">
+          <small *ngIf="nombre.errors?.['required']">El nombre es obligatorio.</small>
+          <small *ngIf="nombre.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</small>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <input 
+          id="descripcion" 
+          [(ngModel)]="categoria.descripcion" 
+          name="descripcion" 
+          placeholder="Descripción" 
+          required 
+          minlength="5"
+          #descripcion="ngModel" 
+          class="form-control"
+        />
+        <div *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)" class="error-message">
+          <small *ngIf="descripcion.errors?.['required']">La descripción es obligatoria.</small>
+          <small *ngIf="descripcion.errors?.['minlength']">La descripción debe tener al menos 5 caracteres.</small>
+        </div>
+      </div>
+  
+      <div class="button-container">
+        <button type="submit" [disabled]="categoriaForm.invalid" class="submit-btn">Actualizar</button>
+        <button type="button" (click)="cancelar()" class="cancel-btn">Cancelar</button>
+      </div>
+    </form>
+</div>

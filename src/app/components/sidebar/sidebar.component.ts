@@ -16,8 +16,9 @@ export class SidebarComponent {
       { title: 'Usuarios', route: '/usuario' },
     ]},
     { title: 'Inventario', expanded: false, children: [
-      { title: 'Productos', route: '/persona' },
-      { title: 'Inventario', route: '/persona/settings' }
+      { title: 'Productos', route: '/producto' },
+      { title: 'Inventario', route: '/inventario' },
+      { title: 'Categorias', route: '/categoria' }
     ]},
     { title: 'Ventas', expanded: false, children: [
       { title: 'Carritos', route: '/persona' },

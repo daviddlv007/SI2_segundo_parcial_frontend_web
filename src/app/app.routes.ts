@@ -1,4 +1,13 @@
 import { Routes } from '@angular/router';
+import { CategoriaComponent } from './components/categoria/categoria.component';
+import { CategoriaCreateComponent } from './components/categoria/categoria-create/categoria-create.component';
+import { CategoriaUpdateComponent } from './components/categoria/categoria-update/categoria-update.component';
+import { ProductoComponent } from './components/producto/producto.component';
+import { ProductoCreateComponent } from './components/producto/producto-create/producto-create.component';
+import { ProductoUpdateComponent } from './components/producto/producto-update/producto-update.component';
+// import { InventarioComponent } from './components/inventario/inventario.component';
+// import { InventarioCreateComponent } from './components/inventario/inventario-create/inventario-create.component';
+// import { InventarioUpdateComponent } from './components/inventario/inventario-update/inventario-update.component';
 import { PersonaComponent } from './components/persona/persona.component';
 import { PersonaCreateComponent } from './components/persona/persona-create/persona-create.component';
 import { PersonaUpdateComponent } from './components/persona/persona-update/persona-update.component';
@@ -24,7 +33,7 @@ export const routes: Routes = [
       { path: 'persona', component: PersonaComponent },
       { path: 'persona-create', component: PersonaCreateComponent },
       { path: 'persona-update/:id', component: PersonaUpdateComponent },
-      
+
       { path: 'auto', component: AutoComponent },
       { path: 'auto-create', component: AutoCreateComponent },
       { path: 'auto-update/:id', component: AutoUpdateComponent },
@@ -36,6 +45,18 @@ export const routes: Routes = [
       { path: 'usuario', component: UsuarioComponent },
       { path: 'usuario-create', component: UsuarioCreateComponent },
       { path: 'usuario-update/:id', component: UsuarioUpdateComponent },
+
+      { path: 'categoria', component: CategoriaComponent },
+      { path: 'categoria-create', component: CategoriaCreateComponent },
+      { path: 'categoria-update/:id', component: CategoriaUpdateComponent },
+
+      { path: 'producto', component: ProductoComponent },
+      { path: 'producto-create', component: ProductoCreateComponent },
+      { path: 'producto-update/:id', component: ProductoUpdateComponent },
+
+      // { path: 'inventario', component: InventarioComponent },
+      // { path: 'inventario-create', component: InventarioCreateComponent },
+      // { path: 'inventario-update/:id', component: InventarioUpdateComponent },
 
       { path: '', redirectTo: 'usuario', pathMatch: 'full' }
     ]
