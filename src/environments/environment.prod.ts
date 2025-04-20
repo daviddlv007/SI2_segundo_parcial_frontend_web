@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://proyectosi2.duckdns.org:8443'
+    apiUrl: 'https://prueba1dlv7.duckdns.org:443/api'
   };
   
