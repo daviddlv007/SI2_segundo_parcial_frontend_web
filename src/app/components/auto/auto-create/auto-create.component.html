@@ -1,59 +1,73 @@
 <div class="form-container">
-    <h2>Crear Auto</h2>
-  
-    <form (ngSubmit)="crearAuto()" #autoForm="ngForm">
-      <div class="form-group">
-        <label for="marca">Marca:</label>
-        <input 
-          id="marca" 
-          [(ngModel)]="auto.marca" 
-          name="marca" 
-          placeholder="Marca" 
-          required 
-          minlength="2"
-          #marca="ngModel" 
-          class="form-control"
-        />
-        <div *ngIf="marca.invalid && (marca.dirty || marca.touched)" class="error-message">
-          <small *ngIf="marca.errors?.['required']">La marca es obligatoria.</small>
-          <small *ngIf="marca.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
-        </div>
+  <h2>Crear Auto</h2>
+
+  <form (ngSubmit)="crearAuto()" #autoForm="ngForm">
+    <!-- Marca -->
+    <div class="form-group">
+      <label for="marca">Marca:</label>
+      <input
+        id="marca"
+        [(ngModel)]="auto.marca"
+        name="marca"
+        placeholder="Marca"
+        required
+        minlength="2"
+        #marca="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="marca.invalid && (marca.dirty || marca.touched)" class="error-message">
+        <small *ngIf="marca.errors?.['required']">La marca es obligatoria.</small>
+        <small *ngIf="marca.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
       </div>
-  
-      <div class="form-group">
-        <label for="modelo">Modelo:</label>
-        <input 
-          id="modelo" 
-          [(ngModel)]="auto.modelo" 
-          name="modelo" 
-          placeholder="Modelo" 
-          required 
-          minlength="2"
-          #modelo="ngModel" 
-          class="form-control"
-        />
-        <div *ngIf="modelo.invalid && (modelo.dirty || modelo.touched)" class="error-message">
-          <small *ngIf="modelo.errors?.['required']">El modelo es obligatorio.</small>
-          <small *ngIf="modelo.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
-        </div>
+    </div>
+
+    <!-- Modelo -->
+    <div class="form-group">
+      <label for="modelo">Modelo:</label>
+      <input
+        id="modelo"
+        [(ngModel)]="auto.modelo"
+        name="modelo"
+        placeholder="Modelo"
+        required
+        minlength="2"
+        #modelo="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="modelo.invalid && (modelo.dirty || modelo.touched)" class="error-message">
+        <small *ngIf="modelo.errors?.['required']">El modelo es obligatorio.</small>
+        <small *ngIf="modelo.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
       </div>
-  
-      <div class="form-group">
-        <label for="persona">Propietario:</label>
-        <select id="persona" [(ngModel)]="auto.persona.id" name="persona" required class="form-control">
-          <option *ngFor="let persona of personas" [value]="persona.id">
-            {{ persona.nombre }}
-          </option>
-        </select>
-        <div *ngIf="auto.persona.id === 0 && autoForm.submitted" class="error-message">
-          <small>Debe seleccionar un propietario.</small>
-        </div>
+    </div>
+
+    <!-- Propietario -->
+    <div class="form-group">
+      <label for="persona">Propietario:</label>
+      <select
+        id="persona"
+        [(ngModel)]="auto.persona"
+        name="persona"
+        required
+        class="form-control"
+      >
+        <option value="" disabled>Seleccione...</option>
+        <option *ngFor="let persona of personas" [value]="persona.id">
+          {{ persona.nombre }}
+        </option>
+      </select>
+      <div *ngIf="autoForm.submitted && auto.persona === 0" class="error-message">
+        <small>Debe seleccionar un propietario.</small>
       </div>
-  
-      <div class="button-container">
-        <button type="submit" [disabled]="autoForm.invalid" class="submit-btn">Crear</button>
-        <button type="button" (click)="cancelar()" class="cancel-btn">Cancelar</button>
-      </div>
-    </form>
-  </div>
-  
+    </div>
+
+    <!-- Botones -->
+    <div class="button-container">
+      <button type="submit" [disabled]="autoForm.invalid" class="submit-btn">
+        Crear
+      </button>
+      <button type="button" (click)="cancelar()" class="cancel-btn">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

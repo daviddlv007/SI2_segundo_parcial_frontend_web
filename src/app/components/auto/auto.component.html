@@ -8,8 +8,16 @@
 
 <div>
   <h2>Autos</h2>
-  <input type="text" [(ngModel)]="textoBusqueda" (input)="filtrarAutos()" placeholder="Buscar...">
-  <button (click)="irACrearAuto()" style="float: right; margin-bottom: 10px;">Registrar</button>
+  <input
+    type="text"
+    [(ngModel)]="textoBusqueda"
+    (input)="filtrarAutos()"
+    placeholder="Buscar..."
+  />
+  <button (click)="irACrearAuto()" style="float: right; margin-bottom: 10px;">
+    Registrar
+  </button>
+
   <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
     <thead>
       <tr>
@@ -23,7 +31,7 @@
       <tr *ngFor="let a of autosPaginados">
         <td>{{ a.marca }}</td>
         <td>{{ a.modelo }}</td>
-        <td>{{ a.persona.nombre }}</td>
+        <td>{{ a.personaNombre }}</td>
         <td>
           <button (click)="irAEditarAuto(a.id ?? 0)">Editar</button>
           <button (click)="confirmarEliminarAuto(a.id ?? 0)">Eliminar</button>
@@ -31,9 +39,17 @@
       </tr>
     </tbody>
   </table>
+
   <div style="margin-top: 20px;">
-    <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">Anterior</button>
+    <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">
+      Anterior
+    </button>
     <span> Página {{ paginaActual }} </span>
-    <button (click)="cambiarPagina('next')" [disabled]="paginaActual === totalPaginas">Siguiente</button>
+    <button
+      (click)="cambiarPagina('next')"
+      [disabled]="paginaActual === totalPaginas"
+    >
+      Siguiente
+    </button>
   </div>
 </div>

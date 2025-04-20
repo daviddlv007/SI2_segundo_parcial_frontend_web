@@ -13,25 +13,25 @@ export class PersonaService {
   constructor(private http: HttpClient) {}
 
   obtenerPersonas(): Observable<Persona[]> {
-    return this.http.get<Persona[]>(`${this.apiUrl}/personas`);
+    return this.http.get<Persona[]>(`${this.apiUrl}/personas/`);
   }
 
   obtenerPersonaPorId(id: number): Observable<Persona> {
-    return this.http.get<Persona>(`${this.apiUrl}/personas/${id}`);
+    return this.http.get<Persona>(`${this.apiUrl}/personas/${id}/`);
   }
 
   crearPersona(persona: Persona): Observable<Persona> {
     const personaSinId = { ...persona };
     delete personaSinId.id;
 
-    return this.http.post<Persona>(`${this.apiUrl}/personas`, personaSinId);
+    return this.http.post<Persona>(`${this.apiUrl}/personas/`, personaSinId);
   }
 
   actualizarPersona(id: number, persona: Persona): Observable<Persona> {
-    return this.http.put<Persona>(`${this.apiUrl}/personas/${id}`, persona);
+    return this.http.put<Persona>(`${this.apiUrl}/personas/${id}/`, persona);
   }
 
   eliminarPersona(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/personas/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/personas/${id}/`);
   }
 }

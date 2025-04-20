@@ -12,10 +12,11 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './auto-create.component.html',
-  styleUrl: './auto-create.component.scss'
+  styleUrls: ['./auto-create.component.scss']
 })
 export class AutoCreateComponent implements OnInit {
-  auto: Auto = { marca: '', modelo: '', persona: { id: 0, nombre: '' } };
+  // ahora persona es un number (id)
+  auto: Auto = { marca: '', modelo: '', persona: 0 };
   personas: Persona[] = [];
 
   constructor(

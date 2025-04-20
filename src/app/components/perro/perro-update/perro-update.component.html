@@ -1,71 +1,107 @@
 <div class="form-container">
-    <h2>Actualizar Perro</h2>
-  
-    <form (ngSubmit)="actualizarPerro()" #perroForm="ngForm">
-      <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <input 
-          id="nombre"
-          [(ngModel)]="perro.nombre"
-          name="nombre"
-          placeholder="Nombre"
-          required
-          minlength="2"
-          #nombre="ngModel"
-          class="form-control"
-        />
-        <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="error-message">
-          <small *ngIf="nombre.errors?.['required']">El nombre es obligatorio.</small>
-          <small *ngIf="nombre.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
-        </div>
+  <h2>Actualizar Perro</h2>
+
+  <form (ngSubmit)="actualizarPerro()" #perroForm="ngForm">
+    <!-- Nombre -->
+    <div class="form-group">
+      <label for="nombre">Nombre:</label>
+      <input
+        id="nombre"
+        [(ngModel)]="perro.nombre"
+        name="nombre"
+        placeholder="Nombre"
+        required
+        minlength="2"
+        #nombre="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="error-message">
+        <small *ngIf="nombre.errors?.['required']">El nombre es obligatorio.</small>
+        <small *ngIf="nombre.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
       </div>
-  
-      <div class="form-group">
-        <label for="raza">Raza:</label>
-        <input 
-          id="raza"
-          [(ngModel)]="perro.raza"
-          name="raza"
-          placeholder="Raza"
-          required
-          minlength="2"
-          #raza="ngModel"
-          class="form-control"
-        />
-        <div *ngIf="raza.invalid && (raza.dirty || raza.touched)" class="error-message">
-          <small *ngIf="raza.errors?.['required']">La raza es obligatoria.</small>
-          <small *ngIf="raza.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
-        </div>
+    </div>
+
+    <!-- Raza -->
+    <div class="form-group">
+      <label for="raza">Raza:</label>
+      <input
+        id="raza"
+        [(ngModel)]="perro.raza"
+        name="raza"
+        placeholder="Raza"
+        required
+        minlength="2"
+        #raza="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="raza.invalid && (raza.dirty || raza.touched)" class="error-message">
+        <small *ngIf="raza.errors?.['required']">La raza es obligatoria.</small>
+        <small *ngIf="raza.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
       </div>
-  
-      <div class="form-group">
-        <label for="personas">Propietarios:</label>
-        <select id="personas" [(ngModel)]="personaSeleccionada" name="personas" class="form-control">
-          <option *ngFor="let persona of personas" [ngValue]="persona">
-            {{ persona.nombre }}
-          </option>
-        </select>
-        <div class="add-button-container">
-          <button type="button" (click)="addPersonaToSelected(personaSeleccionada)" class="add-btn">
-            Añadir
+    </div>
+
+    <!-- Selección de personas -->
+    <div class="form-group">
+      <label for="personas">Propietarios:</label>
+      <select
+        id="personas"
+        [(ngModel)]="personaSeleccionada"
+        name="personas"
+        class="form-control"
+      >
+        <option [ngValue]="null" disabled selected>Seleccione una persona...</option>
+        <option *ngFor="let persona of personas" [ngValue]="persona">
+          {{ persona.nombre }}
+        </option>
+      </select>
+      <div class="add-button-container">
+        <button
+          type="button"
+          (click)="addPersonaToSelected(personaSeleccionada)"
+          [disabled]="!personaSeleccionada"
+          class="add-btn"
+        >
+          Añadir
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de propietarios seleccionados -->
+    <div class="form-group">
+      <label>Propietarios seleccionados:</label>
+      <ul *ngIf="selectedPersonas.length > 0; else noPersonas">
+        <li *ngFor="let persona of selectedPersonas">
+          {{ persona.nombre }}
+          <button 
+            type="button" 
+            (click)="removePersonaFromSelected(persona)"
+            class="remove-btn"
+          >
+            Eliminar
           </button>
-        </div>          
-      </div>
-  
-      <div class="form-group">
-        <label>Propietarios seleccionados:</label>
-        <ul>
-          <li *ngFor="let persona of selectedPersonas">
-            {{ persona.nombre }} 
-            <button type="button" (click)="removePersonaFromSelected(persona)">Eliminar</button>
-          </li>
-        </ul>
-      </div>
-  
-      <div class="button-container">
-        <button type="submit" [disabled]="perroForm.invalid" class="submit-btn">Actualizar</button>
-        <button type="button" (click)="cancelar()" class="cancel-btn">Cancelar</button>
-      </div>
-    </form>
-  </div>
-  
+        </li>
+      </ul>
+      <ng-template #noPersonas>
+        <p>No hay propietarios seleccionados</p>
+      </ng-template>
+    </div>
+
+    <!-- Botones -->
+    <div class="button-container">
+      <button 
+        type="submit" 
+        [disabled]="perroForm.invalid" 
+        class="submit-btn"
+      >
+        Guardar cambios
+      </button>
+      <button 
+        type="button" 
+        (click)="cancelar()" 
+        class="cancel-btn"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

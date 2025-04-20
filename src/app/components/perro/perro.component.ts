@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
+// src/app/components/perro/perro.component.ts
+
+import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { PerroService } from '../../services/perro/perro.service';
-import { PersonaPerroService } from '../../services/persona-perro/persona-perro.service';
-import { Perro } from '../../models/perro/perro.model';
-import { PersonaPerro } from '../../models/persona-perro/persona-perro.model';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+
+import { PerroService } from '../../services/perro/perro.service';
+import { PersonaService } from '../../services/persona/persona.service';
+import { PersonaPerroService } from '../../services/persona-perro/persona-perro.service';
+
+import { Perro } from '../../models/perro/perro.model';
+import { Persona } from '../../models/persona/persona.model';
+import { PersonaPerro } from '../../models/persona-perro/persona-perro.model';
+
 import { FilterService } from '../../services/filter/filter.service';
 import { PaginationService } from '../../services/pagination/pagination.service';
 
@@ -17,25 +24,27 @@ import { PaginationService } from '../../services/pagination/pagination.service'
   templateUrl: './perro.component.html',
   styleUrls: ['./perro.component.scss'],
 })
-export class PerroComponent {
+export class PerroComponent implements OnInit {
   perros: Perro[] = [];
   perrosFiltrados: Perro[] = [];
   perrosPaginados: Perro[] = [];
   personaPerros: PersonaPerro[] = [];
-  textoBusqueda: string = '';
-  paginaActual: number = 1;
-  elementosPorPagina: number = 5;
-  totalPaginas: number = 0;
+  textoBusqueda = '';
+  paginaActual = 1;
+  elementosPorPagina = 5;
+  totalPaginas = 0;
 
-  // Modal de eliminación
-  mostrarModalEliminar: boolean = false;
+  mostrarModalEliminar = false;
   perroAEliminarId: number | null = null;
 
-  // Modal de ver personas vinculadas
-  mostrarModalPersonas: boolean = false;
+  mostrarModalPersonas = false;
+
+  // mapa id->nombre
+  private personaMap: Record<number, string> = {};
 
   constructor(
     private perroService: PerroService,
+    private personaService: PersonaService,
     private personaPerroService: PersonaPerroService,
     private router: Router,
     private filterService: FilterService,
@@ -43,33 +52,62 @@ export class PerroComponent {
   ) {}
 
   ngOnInit() {
+    this.cargarPersonas();
     this.obtenerPerros();
   }
 
+  private cargarPersonas(): void {
+    this.personaService.obtenerPersonas().subscribe(personas => {
+      personas.forEach(p => {
+        if (p.id != null) this.personaMap[p.id] = p.nombre;
+      });
+    });
+  }
+
   obtenerPerros(): void {
-    this.perroService.obtenerPerros().subscribe((data) => {
+    this.perroService.obtenerPerros().subscribe(data => {
       this.perros = data;
-      this.perrosFiltrados = data;
+      this.perrosFiltrados = [...data];
       this.calcularPaginacion();
     });
   }
 
   verPersonasPorPerro(id: number): void {
-    this.personaPerroService.obtenerPersonaPerros().subscribe((data) => {
-      this.personaPerros = data.filter(pp => pp.perro?.id === id);
-      this.mostrarModalPersonas = true; // Mostrar el modal de personas vinculadas
+    this.personaPerroService.obtenerPersonaPerros().subscribe(data => {
+      this.personaPerros = data
+        .filter(pp => pp.perro === id)
+        .map(pp => ({
+          ...pp,
+          personaNombre: this.personaMap[pp.persona] ?? '–'
+        }));
+      this.mostrarModalPersonas = true;
     });
   }
+  
 
   cerrarModalPersonas(): void {
     this.mostrarModalPersonas = false;
     this.personaPerros = [];
   }
 
-  eliminarPerro(id: number): void {
-    this.perroService.eliminarPerro(id).subscribe(() => {
-      this.obtenerPerros();
-    });
+  confirmarEliminarPerro(id: number): void {
+    this.perroAEliminarId = id;
+    this.mostrarModalEliminar = true;
+  }
+
+  eliminarPerroConfirmado(): void {
+    if (this.perroAEliminarId != null) {
+      this.perroService.eliminarPerro(this.perroAEliminarId)
+        .subscribe(() => {
+          this.obtenerPerros();
+          this.cerrarModalEliminar();
+        });
+    }
+  }
+
+  cerrarModalEliminar(): void {
+    this.mostrarModalEliminar = false;
+    this.perroAEliminarId = null;
   }
 
   irACrearPerro(): void {
@@ -80,24 +118,6 @@ export class PerroComponent {
     this.router.navigate([`/perro-update/${id}`]);
   }
 
-  // Funciones relacionadas con el modal de eliminación de un perro
-  confirmarEliminarPerro(id: number): void {
-    this.perroAEliminarId = id;  // Guardar el id del perro a eliminar
-    this.mostrarModalEliminar = true;  // Mostrar el modal de eliminación
-  }
-
-  eliminarPerroConfirmado(): void {
-    if (this.perroAEliminarId !== null) {
-      this.eliminarPerro(this.perroAEliminarId);  // Eliminar el perro
-      this.cerrarModalEliminar();  // Cerrar el modal de eliminación
-    }
-  }
-
-  cerrarModalEliminar(): void {
-    this.mostrarModalEliminar = false;  // Cerrar el modal de eliminación
-  }
-
-  // Función para filtrar perros
   filtrarPerros(): void {
     this.perrosFiltrados = this.filterService.filtrar(this.perros, this.textoBusqueda);
     this.paginaActual = 1;
@@ -105,30 +125,17 @@ export class PerroComponent {
   }
 
   calcularPaginacion(): void {
-    const paginacion = this.paginationService.paginate(
-      this.perrosFiltrados,
-      this.paginaActual,
-      this.elementosPorPagina
+    const pag = this.paginationService.paginate(
+      this.perrosFiltrados, this.paginaActual, this.elementosPorPagina
     );
-    this.totalPaginas = paginacion.totalPages;
-    this.perrosPaginados = paginacion.paginatedData;
+    this.totalPaginas = pag.totalPages;
+    this.perrosPaginados = pag.paginatedData;
   }
 
-  cambiarPagina(direccion: string): void {
+  cambiarPagina(dir: string): void {
     this.paginaActual = this.paginationService.changePage(
-      this.paginaActual,
-      direccion as 'previous' | 'next',
-      this.totalPaginas
+      this.paginaActual, dir as 'previous'|'next', this.totalPaginas
     );
-    this.actualizarPerrosPaginados();
-  }
-
-  actualizarPerrosPaginados(): void {
-    const paginacion = this.paginationService.paginate(
-      this.perrosFiltrados,
-      this.paginaActual,
-      this.elementosPorPagina
-    );
-    this.perrosPaginados = paginacion.paginatedData;
+    this.calcularPaginacion();
   }
 }

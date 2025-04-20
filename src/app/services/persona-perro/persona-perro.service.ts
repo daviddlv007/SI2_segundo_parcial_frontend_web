@@ -1,4 +1,5 @@
-// persona-perro.service.ts
+// src/app/services/persona-perro/persona-perro.service.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -14,22 +15,22 @@ export class PersonaPerroService {
   constructor(private http: HttpClient) {}
 
   obtenerPersonaPerros(): Observable<PersonaPerro[]> {
-    return this.http.get<PersonaPerro[]>(`${this.apiUrl}/persona-perro`);
+    return this.http.get<PersonaPerro[]>(`${this.apiUrl}/personas_perros/`);
   }
 
   obtenerPersonaPerroPorId(id: number): Observable<PersonaPerro> {
-    return this.http.get<PersonaPerro>(`${this.apiUrl}/persona-perro/${id}`);
+    return this.http.get<PersonaPerro>(`${this.apiUrl}/personas_perros/${id}/`);
   }
 
-  crearPersonaPerro(personaPerro: PersonaPerro): Observable<PersonaPerro> {
-    return this.http.post<PersonaPerro>(`${this.apiUrl}/persona-perro`, personaPerro);
+  crearPersonaPerro(pp: PersonaPerro): Observable<PersonaPerro> {
+    return this.http.post<PersonaPerro>(`${this.apiUrl}/personas_perros/`, pp);
   }
 
-  actualizarPersonaPerro(id: number, personaPerro: PersonaPerro): Observable<PersonaPerro> {
-    return this.http.put<PersonaPerro>(`${this.apiUrl}/persona-perro/${id}`, personaPerro);
+  actualizarPersonaPerro(id: number, pp: PersonaPerro): Observable<PersonaPerro> {
+    return this.http.put<PersonaPerro>(`${this.apiUrl}/personas_perros/${id}/`, pp);
   }
 
   eliminarPersonaPerro(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/persona-perro/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/personas_perros/${id}/`);
   }
 }

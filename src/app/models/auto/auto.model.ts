@@ -1,9 +1,9 @@
 // src/app/models/auto/auto.model.ts
 
 export interface Auto {
-    id?: number; // El ID es opcional porque solo se asigna al obtener o actualizar.
-    marca: string;
-    modelo: string;
-    persona: { id: number; nombre: string }; // Almacenamos el ID de la persona pero mostramos el nombre
-  }
-  
+  id?: number;           // Opcional: solo existe tras crear/actualizar
+  marca: string;
+  modelo: string;
+  persona: number;       // Ahora solo guardamos el ID de la persona
+  personaNombre?: string; // Campo opcional para mostrar en la UI
+}

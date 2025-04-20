@@ -1,3 +1,5 @@
+// src/app/components/perro/perro-create/perro-create.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -40,7 +42,7 @@ export class PerroCreateComponent implements OnInit {
   }
 
   addPersonaToSelected(persona: Persona | null): void {
-    if (persona) {
+    if (persona && persona.id != null) {
       this.selectedPersonas.push(persona);
       this.personas = this.personas.filter(p => p.id !== persona.id);
     }
@@ -49,17 +51,21 @@ export class PerroCreateComponent implements OnInit {
 
   removePersonaFromSelected(persona: Persona): void {
     this.selectedPersonas = this.selectedPersonas.filter(p => p.id !== persona.id);
-    this.personas.push(persona); // Se vuelve a agregar a la lista disponible
+    this.personas.push(persona);
   }
 
   crearPerro(): void {
-    this.perroService.crearPerro(this.perro).subscribe((nuevoPerro) => {
-      this.selectedPersonas.forEach((persona) => {
-        const personaPerro: PersonaPerro = {
-          persona: { id: persona.id },
-          perro: { id: nuevoPerro.id },
-        };
-        this.personaPerroService.crearPersonaPerro(personaPerro).subscribe();
+    this.perroService.crearPerro(this.perro).subscribe(nuevoPerro => {
+      // ahora personaPerro.persona y .perro son solo IDs
+      this.selectedPersonas.forEach(persona => {
+        if (nuevoPerro.id != null && persona.id != null) {
+          const personaPerro: PersonaPerro = {
+            persona: persona.id,
+            perro: nuevoPerro.id
+          };
+          this.personaPerroService.crearPersonaPerro(personaPerro)
+            .subscribe(); // el endpoint ya incluye “/”
+        }
       });
       this.router.navigate(['/perro']);
     });

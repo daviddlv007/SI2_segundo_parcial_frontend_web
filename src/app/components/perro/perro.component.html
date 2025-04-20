@@ -1,13 +1,8 @@
 <div>
   <h2>Perros</h2>
-
-  <!-- Campo de búsqueda -->
   <input type="text" [(ngModel)]="textoBusqueda" (input)="filtrarPerros()" placeholder="Buscar...">
-
-  <!-- Botón para registrar un nuevo perro -->
   <button (click)="irACrearPerro()" style="float: right; margin-bottom: 10px;">Registrar</button>
 
-  <!-- Tabla para mostrar los perros -->
   <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
     <thead>
       <tr>
@@ -32,31 +27,30 @@
     </tbody>
   </table>
 
-  <!-- Controles de paginación -->
   <div style="margin-top: 20px;">
-    <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">Anterior</button>
+    <button (click)="cambiarPagina('previous')" [disabled]="paginaActual===1">Anterior</button>
     <span> Página {{ paginaActual }} </span>
-    <button (click)="cambiarPagina('next')" [disabled]="paginaActual === totalPaginas">Siguiente</button>
+    <button (click)="cambiarPagina('next')" [disabled]="paginaActual===totalPaginas">Siguiente</button>
   </div>
 </div>
 
-<!-- Modal de confirmación para eliminar un perro -->
+<!-- Modal eliminar -->
 <div *ngIf="mostrarModalEliminar" class="modal-eliminar">
   <div class="modal-content-eliminar">
-    <h3>¿Estás seguro de que deseas eliminar este perro?</h3>
+    <h3>¿Estás seguro que deseas eliminar este perro?</h3>
     <button (click)="eliminarPerroConfirmado()">Confirmar</button>
     <button (click)="cerrarModalEliminar()">Cancelar</button>
   </div>
 </div>
 
-<!-- Modal de personas vinculadas -->
+<!-- Modal personas vinculadas -->
 <div *ngIf="mostrarModalPersonas" class="modal">
   <div class="modal-content">
     <span class="close" (click)="cerrarModalPersonas()">&times;</span>
     <h3>Personas vinculadas</h3>
-    <ul *ngIf="personaPerros.length > 0">
-      <li *ngFor="let pp of personaPerros">{{ pp.persona?.nombre }}</li>
+    <ul *ngIf="personaPerros.length>0">
+      <li *ngFor="let pp of personaPerros">{{ pp.personaNombre }}</li>
     </ul>
-    <p *ngIf="personaPerros.length === 0">No hay personas vinculadas a este perro.</p>
+    <p *ngIf="personaPerros.length===0">No hay personas vinculadas a este perro.</p>
   </div>
 </div>
