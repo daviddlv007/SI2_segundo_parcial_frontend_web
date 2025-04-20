@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './topbar.component.scss'
 })
 export class TopbarComponent {
-  title = 'Mi Aplicación';
+  title = 'Administración';
   menuOpen = false;
 
   constructor(private authService: AuthService) {}

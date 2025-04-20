@@ -1,0 +1,61 @@
+<!-- src/app/components/usuario/usuario.component.html -->
+
+<!-- Modal de confirmacion -->
+<div *ngIf="mostrarModal" class="modal">
+    <div class="modal-content">
+      <h3>Estas seguro de que deseas eliminar este usuario?</h3>
+      <button (click)="eliminarUsuarioConfirmado()">Confirmar</button>
+      <button (click)="cerrarModal()">Cancelar</button>
+    </div>
+  </div>
+  
+  <div>
+    <h2>Usuarios</h2>
+  
+    <!-- Busqueda -->
+    <input
+      type="text"
+      [(ngModel)]="textoBusqueda"
+      (input)="filtrarUsuarios()"
+      placeholder="Buscar..."
+    />
+  
+    <!-- Boton registrar -->
+    <button
+      (click)="irACrearUsuario()"
+      style="float: right; margin-bottom: 10px;"
+    >
+      Registrar
+    </button>
+  
+    <!-- Tabla de usuarios -->
+    <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of usuariosPaginados">
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.correo }}</td>
+          <td>{{ u.rol }}</td>
+          <td>
+            <button (click)="irAEditarUsuario(u.id ?? 0)">Editar</button>
+            <button (click)="confirmarEliminarUsuario(u.id ?? 0)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Paginacion -->
+    <div style="margin-top: 20px;">
+      <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">Anterior</button>
+      <span> Pagina {{ paginaActual }} </span>
+      <button (click)="cambiarPagina('next')" [disabled]="paginaActual === totalPaginas">Siguiente</button>
+    </div>
+  </div>
+  

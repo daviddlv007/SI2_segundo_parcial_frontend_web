@@ -12,18 +12,22 @@ import { CommonModule } from '@angular/common';
 export class SidebarComponent {
   menus = [
     { title: 'Home', route: '/', expanded: false, children: [] },
-    { title: 'Menú 1', expanded: false, children: [
+    { title: 'Usuarios', expanded: false, children: [
+      { title: 'Usuarios', route: '/usuario' },
+    ]},
+    { title: 'Inventario', expanded: false, children: [
+      { title: 'Productos', route: '/persona' },
+      { title: 'Inventario', route: '/persona/settings' }
+    ]},
+    { title: 'Ventas', expanded: false, children: [
+      { title: 'Carritos', route: '/persona' },
+      { title: 'Ventas', route: '/persona/settings' },
+      { title: 'Reportes', route: '/persona/settings' }
+    ]},
+    { title: 'Modelos', expanded: false, children: [
       { title: 'Persona', route: '/persona' },
       { title: 'Auto', route: '/auto' },
       { title: 'Perro', route: '/perro' }
-    ]},
-    { title: 'Menú 2', expanded: false, children: [
-      { title: 'Persona', route: '/persona' },
-      { title: 'Settings', route: '/persona/settings' }
-    ]},
-    { title: 'Menú 3', expanded: false, children: [
-      { title: 'Persona', route: '/persona' },
-      { title: 'Settings', route: '/persona/settings' }
     ]}
   ];
 

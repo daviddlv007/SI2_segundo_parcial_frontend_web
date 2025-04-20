@@ -11,6 +11,9 @@ import { PerroUpdateComponent } from './components/perro/perro-update/perro-upda
 import { LoginComponent } from './components/auth/login/login.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { UsuarioComponent } from './components/usuario/usuario.component';
+import { UsuarioCreateComponent } from './components/usuario/usuario-create/usuario-create.component';
+import { UsuarioUpdateComponent } from './components/usuario/usuario-update/usuario-update.component';
 
 export const routes: Routes = [
   { 
@@ -30,9 +33,13 @@ export const routes: Routes = [
       { path: 'perro-create', component: PerroCreateComponent },
       { path: 'perro-update/:id', component: PerroUpdateComponent },
 
-      { path: '', redirectTo: 'persona', pathMatch: 'full' }
+      { path: 'usuario', component: UsuarioComponent },
+      { path: 'usuario-create', component: UsuarioCreateComponent },
+      { path: 'usuario-update/:id', component: UsuarioUpdateComponent },
+
+      { path: '', redirectTo: 'usuario', pathMatch: 'full' }
     ]
   },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: 'persona' }
+  { path: '**', redirectTo: 'usuario' }
 ];
