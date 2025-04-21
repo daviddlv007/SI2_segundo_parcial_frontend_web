@@ -24,7 +24,7 @@ export class SidebarComponent {
       { title: 'Carritos', route: '/carrito-compra' },
       { title: 'Ventas', route: '/venta' },
       { title: 'Reportes', route: '/reporte' }
-    ]},
+    ]}
     // { title: 'Modelos', expanded: false, children: [
     //   { title: 'Persona', route: '/persona' },
     //   { title: 'Auto', route: '/auto' },
