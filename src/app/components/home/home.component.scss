@@ -1,0 +1,134 @@
+.home-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .notificaciones-container {
+    width: 50%;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+    
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+  }
+  
+  .cargando, .sin-notificaciones {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+  }
+  
+  .error {
+    color: #d32f2f;
+    background: #ffebee;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+    
+    button {
+      background: #d32f2f;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      margin-top: 10px;
+      cursor: pointer;
+      
+      &:hover {
+        background: #b71c1c;
+      }
+    }
+  }
+  
+  .lista-notificaciones {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  .notificacion {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #ddd;
+    
+    &-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.9em;
+    }
+    
+    .tipo-icono {
+      margin-right: 10px;
+      font-size: 1.2em;
+    }
+    
+    .tipo {
+      font-weight: bold;
+      margin-right: 15px;
+    }
+    
+    .estado {
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.8em;
+    }
+    
+    &-mensaje {
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+    
+    &-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8em;
+      color: #666;
+    }
+  }
+  
+  .estado-pendiente {
+    background-color: #fff3e0;
+    border-left-color: #ff9800;
+    
+    .estado {
+      background-color: #ff9800;
+      color: white;
+    }
+  }
+  
+  .estado-enviado {
+    background-color: #e8f5e9;
+    border-left-color: #4caf50;
+    
+    .estado {
+      background-color: #4caf50;
+      color: white;
+    }
+  }
+  
+  .estado-desconocido {
+    background-color: #f5f5f5;
+    border-left-color: #9e9e9e;
+    
+    .estado {
+      background-color: #9e9e9e;
+      color: white;
+    }
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .notificaciones-container {
+      width: 90%;
+    }
+  }

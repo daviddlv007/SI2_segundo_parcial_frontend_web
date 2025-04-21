@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SidebarComponent {
   menus = [
-    { title: 'Notificaciones', route: '/notificacion', expanded: false, children: [] },
+    { title: 'Home', route: '/home', expanded: false, children: [] },
     { title: 'Usuarios', expanded: false, children: [
       { title: 'Usuarios', route: '/usuario' },
     ]},
@@ -25,11 +25,11 @@ export class SidebarComponent {
       { title: 'Ventas', route: '/venta' },
       { title: 'Reportes', route: '/reporte' }
     ]},
-    { title: 'Modelos', expanded: false, children: [
-      { title: 'Persona', route: '/persona' },
-      { title: 'Auto', route: '/auto' },
-      { title: 'Perro', route: '/perro' }
-    ]}
+    // { title: 'Modelos', expanded: false, children: [
+    //   { title: 'Persona', route: '/persona' },
+    //   { title: 'Auto', route: '/auto' },
+    //   { title: 'Perro', route: '/perro' }
+    // ]}
   ];
 
   toggleMenu(menu: any) {

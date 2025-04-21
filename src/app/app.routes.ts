@@ -27,8 +27,8 @@ import { CarritoCompraComponent } from './components/carrito-compra/carrito-comp
 import { VentaComponent } from './components/venta/venta.component';
 import { VentaCreateComponent } from './components/venta/venta-create/venta-create.component';
 import { VentaUpdateComponent } from './components/venta/venta-update/venta-update.component';
-
-
+import { ReporteComponent } from './components/reporte/reporte.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 export const routes: Routes = [
@@ -72,6 +72,9 @@ export const routes: Routes = [
       { path: 'venta-create', component: VentaCreateComponent },
       { path: 'venta-update/:id', component: VentaUpdateComponent },
       
+      { path: 'reporte', component: ReporteComponent },
+
+      { path: 'home', component: HomeComponent },
 
       { path: '', redirectTo: 'usuario', pathMatch: 'full' }
     ]
