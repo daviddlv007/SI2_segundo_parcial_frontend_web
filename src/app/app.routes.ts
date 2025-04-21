@@ -5,9 +5,9 @@ import { CategoriaUpdateComponent } from './components/categoria/categoria-updat
 import { ProductoComponent } from './components/producto/producto.component';
 import { ProductoCreateComponent } from './components/producto/producto-create/producto-create.component';
 import { ProductoUpdateComponent } from './components/producto/producto-update/producto-update.component';
-// import { InventarioComponent } from './components/inventario/inventario.component';
-// import { InventarioCreateComponent } from './components/inventario/inventario-create/inventario-create.component';
-// import { InventarioUpdateComponent } from './components/inventario/inventario-update/inventario-update.component';
+import { InventarioComponent } from './components/inventario/inventario.component';
+import { InventarioCreateComponent } from './components/inventario/inventario-create/inventario-create.component';
+import { InventarioUpdateComponent } from './components/inventario/inventario-update/inventario-update.component';
 import { PersonaComponent } from './components/persona/persona.component';
 import { PersonaCreateComponent } from './components/persona/persona-create/persona-create.component';
 import { PersonaUpdateComponent } from './components/persona/persona-update/persona-update.component';
@@ -23,6 +23,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { UsuarioComponent } from './components/usuario/usuario.component';
 import { UsuarioCreateComponent } from './components/usuario/usuario-create/usuario-create.component';
 import { UsuarioUpdateComponent } from './components/usuario/usuario-update/usuario-update.component';
+import { CarritoCompraComponent } from './components/carrito-compra/carrito-compra.component';
 
 export const routes: Routes = [
   { 
@@ -55,9 +56,11 @@ export const routes: Routes = [
       { path: 'producto-create', component: ProductoCreateComponent },
       { path: 'producto-update/:id', component: ProductoUpdateComponent },
 
-      // { path: 'inventario', component: InventarioComponent },
-      // { path: 'inventario-create', component: InventarioCreateComponent },
-      // { path: 'inventario-update/:id', component: InventarioUpdateComponent },
+      { path: 'inventario', component: InventarioComponent },
+      { path: 'inventario-create', component: InventarioCreateComponent },
+      { path: 'inventario-update/:id', component: InventarioUpdateComponent },
+
+      { path: 'carrito-compra', component: CarritoCompraComponent },
 
       { path: '', redirectTo: 'usuario', pathMatch: 'full' }
     ]

@@ -1,0 +1,74 @@
+<div class="form-container">
+    <h2>Crear Inventario</h2>
+  
+    <form (ngSubmit)="crearInventario()" #inventarioForm="ngForm">
+      <!-- Cantidad -->
+      <div class="form-group">
+        <label for="cantidad">Cantidad:</label>
+        <input
+          id="cantidad"
+          [(ngModel)]="inventario.cantidad"
+          name="cantidad"
+          type="number"
+          required
+          min="1"
+          #cantidad="ngModel"
+          class="form-control"
+        />
+        <div *ngIf="cantidad.invalid && (cantidad.dirty || cantidad.touched)" class="error-message">
+          <small *ngIf="cantidad.errors?.['required']">La cantidad es obligatoria.</small>
+          <small *ngIf="cantidad.errors?.['min']">Debe ser al menos 1.</small>
+        </div>
+      </div>
+  
+      <!-- Umbral de Alerta -->
+      <div class="form-group">
+        <label for="umbral_alerta">Umbral de Alerta:</label>
+        <input
+          id="umbral_alerta"
+          [(ngModel)]="inventario.umbral_alerta"
+          name="umbral_alerta"
+          type="number"
+          required
+          min="1"
+          #umbral_alerta="ngModel"
+          class="form-control"
+        />
+        <div *ngIf="umbral_alerta.invalid && (umbral_alerta.dirty || umbral_alerta.touched)" class="error-message">
+          <small *ngIf="umbral_alerta.errors?.['required']">El umbral de alerta es obligatorio.</small>
+          <small *ngIf="umbral_alerta.errors?.['min']">Debe ser al menos 1.</small>
+        </div>
+      </div>
+  
+      <!-- Producto -->
+      <div class="form-group">
+        <label for="producto">Producto:</label>
+        <select
+          id="producto"
+          [(ngModel)]="inventario.producto"
+          name="producto"
+          required
+          class="form-control"
+        >
+          <option value="" disabled>Seleccione...</option>
+          <option *ngFor="let producto of productos" [value]="producto.id">
+            {{ producto.nombre }}
+          </option>
+        </select>
+        <div *ngIf="inventarioForm.submitted && inventario.producto === 0" class="error-message">
+          <small>Debe seleccionar un producto.</small>
+        </div>
+      </div>
+  
+      <!-- Botones -->
+      <div class="button-container">
+        <button type="submit" [disabled]="inventarioForm.invalid" class="submit-btn">
+          Crear
+        </button>
+        <button type="button" (click)="cancelar()" class="cancel-btn">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+  

@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SidebarComponent {
   menus = [
-    { title: 'Home', route: '/', expanded: false, children: [] },
+    { title: 'Notificaciones', route: '/notificacion', expanded: false, children: [] },
     { title: 'Usuarios', expanded: false, children: [
       { title: 'Usuarios', route: '/usuario' },
     ]},
@@ -21,7 +21,7 @@ export class SidebarComponent {
       { title: 'Categorias', route: '/categoria' }
     ]},
     { title: 'Ventas', expanded: false, children: [
-      { title: 'Carritos', route: '/persona' },
+      { title: 'Carritos', route: '/carrito-compra' },
       { title: 'Ventas', route: '/persona/settings' },
       { title: 'Reportes', route: '/persona/settings' }
     ]},
