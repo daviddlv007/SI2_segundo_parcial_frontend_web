@@ -25,8 +25,8 @@ import { UsuarioCreateComponent } from './components/usuario/usuario-create/usua
 import { UsuarioUpdateComponent } from './components/usuario/usuario-update/usuario-update.component';
 import { CarritoCompraComponent } from './components/carrito-compra/carrito-compra.component';
 import { VentaComponent } from './components/venta/venta.component';
-// import { VentaCreateComponent } from './components/venta/venta-create/venta-create.component';
-// import { VentaUpdateComponent } from './components/venta/venta-update/venta-update.component';
+import { VentaCreateComponent } from './components/venta/venta-create/venta-create.component';
+import { VentaUpdateComponent } from './components/venta/venta-update/venta-update.component';
 
 
 
@@ -69,8 +69,8 @@ export const routes: Routes = [
       { path: 'carrito-compra', component: CarritoCompraComponent },
 
       { path: 'venta', component: VentaComponent },
-      // { path: 'venta-create', component: VentaCreateComponent },
-      // { path: 'venta-update/:id', component: VentaUpdateComponent },
+      { path: 'venta-create', component: VentaCreateComponent },
+      { path: 'venta-update/:id', component: VentaUpdateComponent },
       
 
       { path: '', redirectTo: 'usuario', pathMatch: 'full' }

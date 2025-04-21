@@ -9,4 +9,3 @@ export interface Producto {
     categoria: number;     // Relacionado con el ID de la categoría
     categoriaNombre?: string; // Campo opcional para mostrar en la UI
   }
-  
