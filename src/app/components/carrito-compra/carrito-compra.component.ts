@@ -1,5 +1,3 @@
-// src/app/components/carrito-compra/carrito-compra.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +28,7 @@ export class CarritoCompraComponent implements OnInit {
   carritosFiltrados: CarritoCompra[] = [];
   carritosPaginados: CarritoCompra[] = [];
   carritoDetalles: CarritoDetalle[] = [];
+  todosDetalles: CarritoDetalle[] = [];
   textoBusqueda = '';
   paginaActual = 1;
   elementosPorPagina = 5;
@@ -37,8 +36,8 @@ export class CarritoCompraComponent implements OnInit {
 
   mostrarModalEliminar = false;
   carritoAEliminarId: number | null = null;
-
   mostrarModalDetalles = false;
+  cargando = true;
 
   // mapa id->nombre
   private usuarioMap: Record<number, string> = {};
@@ -57,34 +56,45 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   private cargarDatosIniciales(): void {
+    this.cargando = true;
+    
     forkJoin({
       usuarios: this.usuarioService.obtenerUsuarios(),
-      carritos: this.carritoService.obtenerCarritosCompra()
-    }).subscribe(({ usuarios, carritos }) => {
-      // Primero llenamos el mapa de usuarios
-      usuarios.forEach(u => {
-        if (u.id != null) this.usuarioMap[u.id] = u.nombre;
-      });
+      carritos: this.carritoService.obtenerTodosCarritos(),
+      detalles: this.carritoDetalleService.obtenerTodosDetalles()
+    }).subscribe({
+      next: ({ usuarios, carritos, detalles }) => {
+        // Llenar mapa de usuarios
+        usuarios.forEach(u => {
+          if (u.id != null) this.usuarioMap[u.id] = u.nombre;
+        });
 
-      // Luego procesamos los carritos con los nombres de usuario
-      this.carritos = carritos.map(c => ({
-        ...c,
-        usuarioNombre: this.usuarioMap[c.usuario] ?? 'Usuario no encontrado'
-      }));
-      
-      this.carritosFiltrados = [...this.carritos];
-      this.calcularPaginacion();
+        // Guardar todos los detalles para filtrado
+        this.todosDetalles = detalles;
+
+        // Procesar carritos con nombres de usuario
+        this.carritos = carritos.map(c => ({
+          ...c,
+          usuarioNombre: this.usuarioMap[c.usuario] ?? 'Usuario no encontrado'
+        }));
+        
+        this.carritosFiltrados = [...this.carritos];
+        this.calcularPaginacion();
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar datos:', err);
+        this.cargando = false;
+      }
     });
   }
 
   verDetallesPorCarrito(id: number): void {
-    this.carritoDetalleService.obtenerDetallesPorCarrito(id).subscribe(data => {
-      this.carritoDetalles = data;
-      this.mostrarModalDetalles = true;
-    });
+    // Filtrado en frontend con los detalles ya cargados
+    this.carritoDetalles = this.todosDetalles.filter(d => d.carrito === id);
+    this.mostrarModalDetalles = true;
   }
 
-  // ... (el resto de los métodos permanecen igual)
   cerrarModalDetalles(): void {
     this.mostrarModalDetalles = false;
     this.carritoDetalles = [];
@@ -97,10 +107,15 @@ export class CarritoCompraComponent implements OnInit {
 
   eliminarCarritoConfirmado(): void {
     if (this.carritoAEliminarId != null) {
-      this.carritoService.eliminarCarritoCompra(this.carritoAEliminarId)
-        .subscribe(() => {
-          this.cargarDatosIniciales(); // Recargamos todos los datos
-          this.cerrarModalEliminar();
+      this.carritoService.eliminarCarrito(this.carritoAEliminarId)
+        .subscribe({
+          next: () => {
+            this.cargarDatosIniciales();
+            this.cerrarModalEliminar();
+          },
+          error: (err) => {
+            console.error('Error al eliminar carrito:', err);
+          }
         });
     }
   }
@@ -138,4 +153,15 @@ export class CarritoCompraComponent implements OnInit {
     );
     this.calcularPaginacion();
   }
+
+
+calcularSubtotal(detalle: CarritoDetalle): number {
+    return detalle.cantidad * parseFloat(detalle.precio_unitario);
+  }
+
+calcularTotal(): number {
+  return this.carritoDetalles.reduce((total, detalle) => {
+    return total + this.calcularSubtotal(detalle);
+  }, 0);
+}
 }

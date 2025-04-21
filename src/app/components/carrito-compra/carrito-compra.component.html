@@ -1,71 +1,90 @@
 <div>
     <h2>Carritos de Compra</h2>
-    <input type="text" [(ngModel)]="textoBusqueda" (input)="filtrarCarritos()" placeholder="Buscar...">
-    <!-- <button (click)="irACrearCarrito()" style="float: right; margin-bottom: 10px;">Crear Nuevo</button> -->
-  
-    <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Estado</th>
-          <th>Usuario</th>
-          <th>Detalles</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let c of carritosPaginados">
-          <td>{{ c.id }}</td>
-          <td>{{ c.estado }}</td>
-          <td>{{ c.usuarioNombre }}</td>
-          <td>
-            <button (click)="verDetallesPorCarrito(c.id ?? 0)">Ver Detalles</button>
-          </td>
-          <td>
-            <!-- <button (click)="irAEditarCarrito(c.id ?? 0)">Editar</button> -->
-            <button (click)="confirmarEliminarCarrito(c.id ?? 0)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <div style="margin-top: 20px;">
-      <button (click)="cambiarPagina('previous')" [disabled]="paginaActual===1">Anterior</button>
-      <span> Página {{ paginaActual }} de {{ totalPaginas }} </span>
-      <button (click)="cambiarPagina('next')" [disabled]="paginaActual===totalPaginas">Siguiente</button>
+    
+    <div *ngIf="cargando; else contenidoPrincipal">
+      <p>Cargando datos...</p>
     </div>
-  </div>
   
-  <!-- Modal eliminar -->
-  <div *ngIf="mostrarModalEliminar" class="modal-eliminar">
-    <div class="modal-content-eliminar">
-      <h3>¿Estás seguro que deseas eliminar este carrito?</h3>
-      <button (click)="eliminarCarritoConfirmado()">Confirmar</button>
-      <button (click)="cerrarModalEliminar()">Cancelar</button>
-    </div>
-  </div>
+    <ng-template #contenidoPrincipal>
+      <div class="controls">
+        <input type="text" [(ngModel)]="textoBusqueda" (input)="filtrarCarritos()" placeholder="Buscar...">
+        <!-- <button (click)="irACrearCarrito()">Nuevo Carrito</button> -->
+      </div>
   
-  <!-- Modal detalles del carrito -->
-  <div *ngIf="mostrarModalDetalles" class="modal">
-    <div class="modal-content">
-      <span class="close" (click)="cerrarModalDetalles()">&times;</span>
-      <h3>Detalles del Carrito</h3>
-      <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 10px;">
+      <table>
         <thead>
           <tr>
-            <th>Producto ID</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
+            <th>ID</th>
+            <th>Estado</th>
+            <th>Usuario</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let d of carritoDetalles">
-            <td>{{ d.producto }}</td>
-            <td>{{ d.cantidad }}</td>
-            <td>{{ d.precio_unitario }}</td>
+          <tr *ngFor="let c of carritosPaginados">
+            <td>{{ c.id }}</td>
+            <td>{{ c.estado }}</td>
+            <td>{{ c.usuarioNombre }}</td>
+            <td class="actions">
+              <button (click)="verDetallesPorCarrito(c.id!)"> Ver Detalles</button>
+              <!-- <button (click)="irAEditarCarrito(c.id!)">Editar</button> -->
+              <button (click)="confirmarEliminarCarrito(c.id!)">Eliminar</button>
+            </td>
           </tr>
         </tbody>
       </table>
-      <p *ngIf="carritoDetalles.length===0">No hay detalles en este carrito.</p>
+  
+      <div class="pagination">
+        <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">Anterior</button>
+        <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+        <button (click)="cambiarPagina('next')" [disabled]="paginaActual === totalPaginas">Siguiente</button>
+      </div>
+    </ng-template>
+  
+    <!-- Modal Eliminar -->
+    <div *ngIf="mostrarModalEliminar" class="modal">
+      <div class="modal-content">
+        <h3>Confirmar Eliminación</h3>
+        <p>¿Estás seguro de eliminar este carrito?</p>
+        <div class="modal-actions">
+          <button (click)="eliminarCarritoConfirmado()">Confirmar</button>
+          <button (click)="cerrarModalEliminar()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  
+   <!-- Modal Detalles -->
+<div *ngIf="mostrarModalDetalles" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="cerrarModalDetalles()">&times;</span>
+      <h3>Detalles del Carrito</h3>
+      
+      <div *ngIf="carritoDetalles.length > 0; else noDetalles">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto ID</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of carritoDetalles">
+              <td>{{ d.producto }}</td>
+              <td>{{ d.cantidad }}</td>
+              <td>{{ d.precio_unitario | currency }}</td>
+              <td>{{ calcularSubtotal(d) | currency }}</td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="3">Total</td>
+              <td>{{ calcularTotal() | currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #noDetalles>
+        <p>No hay detalles disponibles para este carrito.</p>
+      </ng-template>
     </div>
   </div>
