@@ -63,7 +63,7 @@
         <table>
           <thead>
             <tr>
-              <th>Producto ID</th>
+              <th>Producto</th>
               <th>Cantidad</th>
               <th>Precio Unitario</th>
               <th>Subtotal</th>
@@ -71,7 +71,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let d of carritoDetalles">
-              <td>{{ d.producto }}</td>
+                <td>{{ productoMap[d.producto] || 'Producto no encontrado' }}</td>
               <td>{{ d.cantidad }}</td>
               <td>{{ d.precio_unitario | currency }}</td>
               <td>{{ calcularSubtotal(d) | currency }}</td>

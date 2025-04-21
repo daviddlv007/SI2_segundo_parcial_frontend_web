@@ -1,0 +1,93 @@
+<div *ngIf="mostrarModal" class="modal">
+    <div class="modal-content">
+      <h3>¿Estas seguro de que deseas eliminar esta venta?</h3>
+      <button (click)="eliminarVentaConfirmado()">Confirmar</button>
+      <button (click)="cerrarModal()">Cancelar</button>
+    </div>
+  </div>
+  
+  <div *ngIf="mostrarModalDetalles" class="modal">
+    <div class="modal-content" style="width: 80%; max-width: 800px;">
+      <h3>Detalles del Carrito</h3>
+      <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin: 10px 0;">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detalle of detallesCarritoActual">
+            <td>{{ detalle.productoNombre }}</td>
+            <td>{{ detalle.cantidad }}</td>
+            <td>{{ detalle.precio_unitario }}</td>
+            <td>{{ calcularSubtotal(detalle) | number:'1.2-2' }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+            <td><strong>{{ calcularTotalDetalles() | number:'1.2-2' }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <button (click)="cerrarModalDetalles()">Cerrar</button>
+    </div>
+  </div>
+  
+  <div>
+    <h2>Ventas</h2>
+    <input
+      type="text"
+      [(ngModel)]="textoBusqueda"
+      (input)="filtrarVentas()"
+      placeholder="Buscar..."
+    />
+    <button (click)="irACrearVenta()" style="float: right; margin-bottom: 10px;">
+      Registrar
+    </button>
+  
+    <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Total</th>
+          <th>Metodo Pago</th>
+          <th>Usuario</th>
+          <th>Carrito ID</th>
+          <th>Detalles</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let v of ventasPaginadas">
+          <td>{{ v.fecha | date:'short' }}</td>
+          <td>{{ v.total }}</td>
+          <td>{{ v.metodo_pago }}</td>
+          <td>{{ v.usuarioNombre }}</td>
+          <td>{{ v.carrito }}</td>
+          <td>
+            <button (click)="verDetallesCarrito(v.carrito)">Ver Detalles</button>
+          </td>
+          <td>
+            <button (click)="irAEditarVenta(v.id ?? 0)">Editar</button>
+            <button (click)="confirmarEliminarVenta(v.id ?? 0)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div style="margin-top: 20px;">
+      <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">
+        Anterior
+      </button>
+      <span> Página {{ paginaActual }} </span>
+      <button
+        (click)="cambiarPagina('next')"
+        [disabled]="paginaActual === totalPaginas"
+      >
+        Siguiente
+      </button>
+    </div>
+  </div>
+  

@@ -12,6 +12,7 @@ import { CarritoDetalleService } from '../../services/carrito-detalle/carrito-de
 import { CarritoCompra } from '../../models/carrito-compra/carrito-compra.model';
 import { Usuario } from '../../models/usuario/usuario.model';
 import { CarritoDetalle } from '../../models/carrito-detalle/carrito-detalle.model';
+import { ProductoService } from '../../services/producto/producto.service';
 
 import { FilterService } from '../../services/filter/filter.service';
 import { PaginationService } from '../../services/pagination/pagination.service';
@@ -39,18 +40,27 @@ export class CarritoCompraComponent implements OnInit {
   mostrarModalDetalles = false;
   cargando = true;
 
+
+  private _productoMap: Record<number, string> = {};
+
+  get productoMap(): Record<number, string> {
+    return this._productoMap;
+  }
+  
   // mapa id->nombre
   private usuarioMap: Record<number, string> = {};
 
   constructor(
     private carritoService: CarritoCompraService,
     private usuarioService: UsuarioService,
+    private productoService: ProductoService, 
     private carritoDetalleService: CarritoDetalleService,
     private router: Router,
     private filterService: FilterService,
-    private paginationService: PaginationService
+    private paginationService: PaginationService,
   ) {}
 
+  
   ngOnInit() {
     this.cargarDatosIniciales();
   }
@@ -59,34 +69,42 @@ export class CarritoCompraComponent implements OnInit {
     this.cargando = true;
     
     forkJoin({
-      usuarios: this.usuarioService.obtenerUsuarios(),
-      carritos: this.carritoService.obtenerTodosCarritos(),
-      detalles: this.carritoDetalleService.obtenerTodosDetalles()
-    }).subscribe({
-      next: ({ usuarios, carritos, detalles }) => {
-        // Llenar mapa de usuarios
-        usuarios.forEach(u => {
-          if (u.id != null) this.usuarioMap[u.id] = u.nombre;
-        });
-
-        // Guardar todos los detalles para filtrado
-        this.todosDetalles = detalles;
-
-        // Procesar carritos con nombres de usuario
-        this.carritos = carritos.map(c => ({
-          ...c,
-          usuarioNombre: this.usuarioMap[c.usuario] ?? 'Usuario no encontrado'
-        }));
-        
-        this.carritosFiltrados = [...this.carritos];
-        this.calcularPaginacion();
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error('Error al cargar datos:', err);
-        this.cargando = false;
-      }
+  usuarios: this.usuarioService.obtenerUsuarios(),
+  carritos: this.carritoService.obtenerTodosCarritos(),
+  detalles: this.carritoDetalleService.obtenerTodosDetalles(),
+  productos: this.productoService.obtenerProductos() // <-- nuevo
+}).subscribe({
+  next: ({ usuarios, carritos, detalles, productos }) => {
+    // Mapa de usuarios
+    usuarios.forEach(u => {
+      if (u.id != null) this.usuarioMap[u.id] = u.nombre;
     });
+
+    // Mapa de productos
+    productos.forEach(p => {
+        if (p.id != null) this._productoMap[p.id] = p.nombre;
+      });
+      
+
+    // Guardar detalles
+    this.todosDetalles = detalles;
+
+    // Procesar carritos con nombre de usuario
+    this.carritos = carritos.map(c => ({
+      ...c,
+      usuarioNombre: this.usuarioMap[c.usuario] ?? 'Usuario no encontrado'
+    }));
+
+    this.carritosFiltrados = [...this.carritos];
+    this.calcularPaginacion();
+    this.cargando = false;
+  },
+  error: (err) => {
+    console.error('Error al cargar datos:', err);
+    this.cargando = false;
+  }
+});
+
   }
 
   verDetallesPorCarrito(id: number): void {
@@ -164,4 +182,6 @@ calcularTotal(): number {
     return total + this.calcularSubtotal(detalle);
   }, 0);
 }
+
+
 }
