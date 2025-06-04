@@ -1,4 +1,3 @@
-// login.component.ts
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -28,17 +27,31 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      const { correo, contrasena } = this.loginForm.value;
-      this.authService.login(correo, contrasena).subscribe({
-        next: () => {
-          this.router.navigate(['/persona']);
-        },
-        error: (err) => {
-          this.errorMessage = 'Credenciales incorrectas';
-          console.error(err);
-        }
-      });
+    if (this.loginForm.invalid) {
+      return;
     }
+
+    const { correo, contrasena } = this.loginForm.value;
+
+    this.authService.login(correo, contrasena).subscribe({
+      next: () => {
+        // Ya guardamos token, id y rol en el localStorage
+        const rol = this.authService.getUserRole();
+        console.log('ROL:', rol);
+        // Redirigir dependiendo del rol
+        if (rol === 'admin') {
+          this.router.navigate(['/admin']);
+        } else if (rol === 'profesor') {
+          this.router.navigate(['/profesor']);
+        } else {
+          // Si hay más roles, extiéndelo aquí
+          this.router.navigate(['/login']); 
+        }
+      },
+      error: (err) => {
+        this.errorMessage = 'Credenciales incorrectas';
+        console.error(err);
+      }
+    });
   }
 }

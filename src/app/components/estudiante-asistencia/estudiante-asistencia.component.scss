@@ -1,0 +1,23 @@
+/* src/app/components/estudiante-asistencia/estudiante-asistencia.component.scss */
+
+.container {
+  max-width: 800px;
+}
+
+table {
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+th, td {
+  padding: 0.5rem;
+}
+
+thead th {
+  background-color: #f3f4f6; /* gris claro */
+  font-weight: 600;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}

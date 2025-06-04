@@ -1,0 +1,49 @@
+<!-- src/app/components/registrar-participacion-estudiante/registrar-participacion-estudiante.component.html -->
+
+<div class="container mx-auto p-4 bg-white rounded-lg shadow-sm">
+  <h2 class="text-2xl font-semibold mb-4">Registrar Participaciones ({{ fechaHoy | date:'dd/MM/yyyy' }})</h2>
+
+  <div *ngIf="mensajeError" class="mb-2 text-red-600">
+    {{ mensajeError }}
+  </div>
+  <div *ngIf="mensajeExito" class="mb-2 text-green-600">
+    {{ mensajeExito }}
+  </div>
+
+  <div *ngIf="estudiantes.length === 0 && !mensajeError" class="text-gray-600">
+    Cargando lista de estudiantes...
+  </div>
+
+  <div *ngIf="estudiantes.length > 0">
+    <table class="min-w-full border-collapse mb-4">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-3 py-2 text-left border font-medium">Estudiante</th>
+          <th class="px-3 py-2 text-left border font-medium">Participó</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let est of estudiantes" class="odd:bg-white even:bg-gray-50">
+          <td class="px-3 py-2 border">{{ est.nombre }}</td>
+          <td class="px-3 py-2 border text-center">
+            <input
+              type="checkbox"
+              [(ngModel)]="participoPorEstudiante[est.id]"
+              class="h-5 w-5"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex justify-end">
+    <button
+      (click)="guardarParticipaciones()"
+      [disabled]="cargando || estudiantes.length === 0"
+      class="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+    >
+      {{ cargando ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</div>

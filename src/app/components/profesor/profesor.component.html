@@ -1,0 +1,69 @@
+<!-- src/app/components/profesor/profesor.component.html -->
+
+<!-- Modal de confirmación -->
+<div *ngIf="mostrarModal" class="modal">
+  <div class="modal-content">
+    <h3>¿Estás seguro de que deseas eliminar este profesor?</h3>
+    <button (click)="eliminarProfesorConfirmado()">Confirmar</button>
+    <button (click)="cerrarModal()">Cancelar</button>
+  </div>
+</div>
+
+<div>
+  <h2>Profesores</h2>
+
+  <!-- Botón registrar -->
+  <button
+    (click)="irACrearProfesor()"
+    style="float: right; margin-bottom: 10px;"
+  >
+    Registrar Profesor
+  </button>
+
+  <!-- Tabla de profesores -->
+  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>Nombre de Usuario</th>
+        <th>Especialidad</th>
+        <th>Profesión</th>
+        <th>Fecha Ingreso</th>
+        <th>Tipo Contrato</th>
+        <th>CI</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of profesores">
+        <td>{{ p.usuarioNombre || 'Cargando...' }}</td>
+        <td>{{ p.especialidad }}</td>
+        <td>{{ p.profesion }}</td>
+        <td>{{ p.fecha_ingreso }}</td>
+        <td>{{ p.tipo_contrato }}</td>
+        <td>{{ p.ci }}</td>
+        <td>{{ p.direccion }}</td>
+        <td>{{ p.telefono }}</td>
+        <td>
+          <button (click)="irAEditarProfesor(p.id ?? 0)">Editar</button>
+          <button (click)="confirmarEliminarProfesor(p.id ?? 0)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div style="margin-top: 20px;">
+    <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">
+      Anterior
+    </button>
+    <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+    <button
+      (click)="cambiarPagina('next')"
+      [disabled]="paginaActual >= totalPaginas"
+    >
+      Siguiente
+    </button>
+  </div>
+</div>

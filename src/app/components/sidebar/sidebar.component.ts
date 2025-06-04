@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,26 +10,34 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
+  private readonly prefix = '/admin';
+
+  private route(path: string): string {
+    return `${this.prefix}${path}`;
+  }
+
   menus = [
-    { title: 'Home', route: '/home', expanded: false, children: [] },
-    { title: 'Usuarios', expanded: false, children: [
-      { title: 'Usuarios', route: '/usuario' },
-    ]},
-    { title: 'Inventario', expanded: false, children: [
-      { title: 'Productos', route: '/producto' },
-      { title: 'Inventario', route: '/inventario' },
-      { title: 'Categorias', route: '/categoria' }
-    ]},
-    { title: 'Ventas', expanded: false, children: [
-      { title: 'Carritos', route: '/carrito-compra' },
-      { title: 'Ventas', route: '/venta' },
-      { title: 'Reportes', route: '/reporte' }
-    ]}
-    // { title: 'Modelos', expanded: false, children: [
-    //   { title: 'Persona', route: '/persona' },
-    //   { title: 'Auto', route: '/auto' },
-    //   { title: 'Perro', route: '/perro' }
-    // ]}
+    { title: 'Dashboard', route: this.route('/home'), expanded: false, children: [] },
+    {
+      title: 'Usuarios', expanded: false, children: [
+        { title: 'Usuarios', route: this.route('/usuario') },
+        { title: 'Estudiantes', route: this.route('/estudiante') },
+        { title: 'Profesores', route: this.route('/profesor') },
+      ]
+    },
+    {
+      title: 'Cursos', expanded: false, children: [
+        { title: 'Cursos', route: this.route('/curso') },
+        { title: 'Materias', route: this.route('/materia') },
+        { title: 'Cronograma de Clases', route: this.route('/curso-materia-profesor') }
+      ]
+    },
+    {
+      title: 'Inscripciones', expanded: false, children: [
+        { title: 'Inscripción Anual', route: this.route('/inscripcion') },
+        { title: 'Inscripción Trimestral', route: this.route('/inscripcion-trimestre') }
+      ]
+    }
   ];
 
   toggleMenu(menu: any) {

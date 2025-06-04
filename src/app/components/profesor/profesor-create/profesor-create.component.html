@@ -1,0 +1,157 @@
+<!-- src/app/components/profesor/profesor-create/profesor-create.component.html -->
+
+<div class="form-container">
+  <h2>Crear Profesor</h2>
+  <form #profesorForm="ngForm" (ngSubmit)="crearProfesor()">
+
+    <!-- Autocomplete Usuario -->
+    <div class="form-group">
+      <label for="usuario">Usuario (autocomplete):</label>
+      <input
+        id="usuario"
+        type="text"
+        [(ngModel)]="terminoUsuario"
+        name="usuario"
+        placeholder="Buscar usuario por nombre..."
+        class="form-control"
+        autocomplete="off"
+      />
+      <button type="button" (click)="buscarUsuarios()">Buscar</button>
+
+      <ul *ngIf="listaUsuarios.length > 0" class="autocomplete-list">
+        <li *ngFor="let u of listaUsuarios" (click)="seleccionarUsuario(u)">
+          {{ u.nombre }} ({{ u.correo }})
+        </li>
+      </ul>
+
+      <div *ngIf="terminoUsuario.length >= 2 && listaUsuarios.length === 0">
+        <small>No se encontraron usuarios. Intenta otro término.</small>
+      </div>
+    </div>
+
+    <!-- Especialidad -->
+    <div class="form-group">
+      <label for="especialidad">Especialidad:</label>
+      <input
+        id="especialidad"
+        type="text"
+        [(ngModel)]="profesor.especialidad"
+        name="especialidad"
+        required
+        #esp="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="esp.invalid && (esp.dirty || esp.touched)" class="error-message">
+        <small *ngIf="esp.errors?.['required']">La especialidad es obligatoria.</small>
+      </div>
+    </div>
+
+    <!-- Profesión -->
+    <div class="form-group">
+      <label for="profesion">Profesión:</label>
+      <input
+        id="profesion"
+        type="text"
+        [(ngModel)]="profesor.profesion"
+        name="profesion"
+        required
+        #prof="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="prof.invalid && (prof.dirty || prof.touched)" class="error-message">
+        <small *ngIf="prof.errors?.['required']">La profesión es obligatoria.</small>
+      </div>
+    </div>
+
+    <!-- Fecha de ingreso -->
+    <div class="form-group">
+      <label for="fecha_ingreso">Fecha de Ingreso:</label>
+      <input
+        id="fecha_ingreso"
+        type="date"
+        [(ngModel)]="profesor.fecha_ingreso"
+        name="fecha_ingreso"
+        required
+        #fing="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="fing.invalid && (fing.dirty || fing.touched)" class="error-message">
+        <small *ngIf="fing.errors?.['required']">La fecha de ingreso es obligatoria.</small>
+      </div>
+    </div>
+
+    <!-- Tipo de contrato -->
+    <div class="form-group">
+      <label for="tipo_contrato">Tipo de Contrato:</label>
+      <input
+        id="tipo_contrato"
+        type="text"
+        [(ngModel)]="profesor.tipo_contrato"
+        name="tipo_contrato"
+        required
+        #tcont="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="tcont.invalid && (tcont.dirty || tcont.touched)" class="error-message">
+        <small *ngIf="tcont.errors?.['required']">El tipo de contrato es obligatorio.</small>
+      </div>
+    </div>
+
+    <!-- CI -->
+    <div class="form-group">
+      <label for="ci">CI:</label>
+      <input
+        id="ci"
+        type="text"
+        [(ngModel)]="profesor.ci"
+        name="ci"
+        required
+        #ciField="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="ciField.invalid && (ciField.dirty || ciField.touched)" class="error-message">
+        <small *ngIf="ciField.errors?.['required']">El CI es obligatorio.</small>
+      </div>
+    </div>
+
+    <!-- Dirección -->
+    <div class="form-group">
+      <label for="direccion">Dirección:</label>
+      <input
+        id="direccion"
+        type="text"
+        [(ngModel)]="profesor.direccion"
+        name="direccion"
+        required
+        #dirField="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="dirField.invalid && (dirField.dirty || dirField.touched)" class="error-message">
+        <small *ngIf="dirField.errors?.['required']">La dirección es obligatoria.</small>
+      </div>
+    </div>
+
+    <!-- Teléfono -->
+    <div class="form-group">
+      <label for="telefono">Teléfono:</label>
+      <input
+        id="telefono"
+        type="text"
+        [(ngModel)]="profesor.telefono"
+        name="telefono"
+        required
+        #telField="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="telField.invalid && (telField.dirty || telField.touched)" class="error-message">
+        <small *ngIf="telField.errors?.['required']">El teléfono es obligatorio.</small>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="button-container">
+      <button type="submit" [disabled]="profesorForm.invalid" class="submit-btn">Crear</button>
+      <button type="button" (click)="cancelar()" class="cancel-btn">Cancelar</button>
+    </div>
+  </form>
+</div>

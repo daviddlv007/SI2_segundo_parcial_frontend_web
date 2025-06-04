@@ -1,13 +1,4 @@
 import { Routes } from '@angular/router';
-import { CategoriaComponent } from './components/categoria/categoria.component';
-import { CategoriaCreateComponent } from './components/categoria/categoria-create/categoria-create.component';
-import { CategoriaUpdateComponent } from './components/categoria/categoria-update/categoria-update.component';
-import { ProductoComponent } from './components/producto/producto.component';
-import { ProductoCreateComponent } from './components/producto/producto-create/producto-create.component';
-import { ProductoUpdateComponent } from './components/producto/producto-update/producto-update.component';
-import { InventarioComponent } from './components/inventario/inventario.component';
-import { InventarioCreateComponent } from './components/inventario/inventario-create/inventario-create.component';
-import { InventarioUpdateComponent } from './components/inventario/inventario-update/inventario-update.component';
 import { PersonaComponent } from './components/persona/persona.component';
 import { PersonaCreateComponent } from './components/persona/persona-create/persona-create.component';
 import { PersonaUpdateComponent } from './components/persona/persona-update/persona-update.component';
@@ -23,21 +14,47 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { UsuarioComponent } from './components/usuario/usuario.component';
 import { UsuarioCreateComponent } from './components/usuario/usuario-create/usuario-create.component';
 import { UsuarioUpdateComponent } from './components/usuario/usuario-update/usuario-update.component';
-import { CarritoCompraComponent } from './components/carrito-compra/carrito-compra.component';
-import { VentaComponent } from './components/venta/venta.component';
-import { VentaCreateComponent } from './components/venta/venta-create/venta-create.component';
-import { VentaUpdateComponent } from './components/venta/venta-update/venta-update.component';
-import { ReporteComponent } from './components/reporte/reporte.component';
-import { HomeComponent } from './components/home/home.component';
+//import { HomeComponent } from './components/home/home.component';
+import { ProfesorLayoutComponent } from './layouts/profesor-layout/profesor-layout.component';
+import { RoleRedirectGuard } from './guards/role-redirect/role-redirect.guard';
+import { CursoComponent } from './components/curso/curso.component';
+import { MateriaComponent } from './components/materia/materia.component';
+import { EstudianteComponent } from './components/estudiante/estudiante.component';
+import { ProfesorComponent } from './components/profesor/profesor.component';
+import { CursoMateriaProfesorComponent } from './components/curso-materia-profesor/curso-materia-profesor.component';
+import { InscripcionComponent } from './components/inscripcion/inscripcion.component';
+import { InscripcionTrimestreComponent } from './components/inscripcion-trimestre/inscripcion-trimestre.component';
+
+import { CursosMateriasComponent } from './components/curso-materia/cursos-materias.component';
+import { EstudiantesClaseComponent } from './components/estudiante-clase/estudiantes-clase.component';
+import { EstudianteAsistenciaComponent } from './components/estudiante-asistencia/estudiante-asistencia.component';
+import { RegistrarAsistenciaEstudianteComponent } from './components/registrar-asistencia-estudiante/registrar-asistencia-estudiante.component';
+import { EstudianteEvaluacionLegalComponent } from './components/estudiante-evaluacion-legal/estudiante-evaluacion-legal.component';
+import { RegistrarEvaluacionLegalEstudianteComponent } from './components/registrar-evaluacion-legal-estudiante/registrar-evaluacion-legal-estudiante.component';
+import { EstudianteParticipacionComponent } from './components/estudiante-participacion/estudiante-participacion.component';
+import { RegistrarParticipacionEstudianteComponent } from './components/registrar-participacion-estudiante/registrar-participacion-estudiante.component';
+import { EstudianteCreateComponent } from './components/estudiante/estudiante-create/estudiante-create.component';
+import { EstudianteUpdateComponent } from './components/estudiante/estudiante-update/estudiante-update.component';
+import { MateriaCreateComponent } from './components/materia/materia-create/materia-create.component';
+import { MateriaUpdateComponent } from './components/materia/materia-update/materia-update.component';
+import { ProfesorCreateComponent } from './components/profesor/profesor-create/profesor-create.component';
+import { ProfesorUpdateComponent } from './components/profesor/profesor-update/profesor-update.component';
 
 
 export const routes: Routes = [
-  { 
-    path: '',
+  // Ruta de login
+  { path: 'login', component: LoginComponent },
+
+  // Ruta raíz: redirecciona según el rol
+  { path: '', canActivate: [RoleRedirectGuard], component: LoginComponent },
+
+  // Layout para administrador
+  {
+    path: 'admin',
     component: MainLayoutComponent,
-    // Desactivación de autenticación
-    // canActivate: [AuthGuard],
     children: [
+      { path: 'usuario', component: UsuarioComponent },
+      { path: '', redirectTo: 'usuario', pathMatch: 'full' },
       { path: 'persona', component: PersonaComponent },
       { path: 'persona-create', component: PersonaCreateComponent },
       { path: 'persona-update/:id', component: PersonaUpdateComponent },
@@ -54,31 +71,53 @@ export const routes: Routes = [
       { path: 'usuario-create', component: UsuarioCreateComponent },
       { path: 'usuario-update/:id', component: UsuarioUpdateComponent },
 
-      { path: 'categoria', component: CategoriaComponent },
-      { path: 'categoria-create', component: CategoriaCreateComponent },
-      { path: 'categoria-update/:id', component: CategoriaUpdateComponent },
+      { path: 'curso', component: CursoComponent },
 
-      { path: 'producto', component: ProductoComponent },
-      { path: 'producto-create', component: ProductoCreateComponent },
-      { path: 'producto-update/:id', component: ProductoUpdateComponent },
-
-      { path: 'inventario', component: InventarioComponent },
-      { path: 'inventario-create', component: InventarioCreateComponent },
-      { path: 'inventario-update/:id', component: InventarioUpdateComponent },
-
-      { path: 'carrito-compra', component: CarritoCompraComponent },
-
-      { path: 'venta', component: VentaComponent },
-      { path: 'venta-create', component: VentaCreateComponent },
-      { path: 'venta-update/:id', component: VentaUpdateComponent },
+      { path: 'materia', component: MateriaComponent },
+   
+      { path: 'estudiante', component: EstudianteComponent },
       
-      { path: 'reporte', component: ReporteComponent },
+      { path: 'profesor', component: ProfesorComponent },
+    
+      { path: 'curso-materia-profesor', component: CursoMateriaProfesorComponent },
 
-      { path: 'home', component: HomeComponent },
+      { path: 'inscripcion', component: InscripcionComponent },
 
-      { path: '', redirectTo: 'usuario', pathMatch: 'full' }
+      { path: 'inscripcion-trimestre', component: InscripcionTrimestreComponent },
+
+      { path: 'estudiante-create', component: EstudianteCreateComponent },
+      { path: 'estudiante-update/:id', component: EstudianteUpdateComponent },
+      
+      { path: 'materia-create', component: MateriaCreateComponent },
+      { path: 'materia-update/:id', component: MateriaUpdateComponent },
+
+      { path: 'profesor-create', component: ProfesorCreateComponent },
+      { path: 'profesor-update/:id', component: ProfesorUpdateComponent }
+
     ]
   },
-  { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: 'usuario' }
+
+  // Layout para profesor
+  {
+    path: 'profesor',
+    component: ProfesorLayoutComponent,
+    children: [
+      // Aquí puedes agregar otras rutas específicas del profesor
+      { path: '', component: CursosMateriasComponent }, // puedes cambiar esto
+      { path: 'persona', component: PersonaComponent },
+
+      { path: 'curso-materia', component: CursosMateriasComponent },
+      { path: 'estudiantes-clase', component: EstudiantesClaseComponent },
+      { path: 'estudiante-asistencia', component: EstudianteAsistenciaComponent },
+      { path: 'registrar-asistencia-estudiante', component: RegistrarAsistenciaEstudianteComponent },
+      { path: 'estudiante-evaluacion-legal', component: EstudianteEvaluacionLegalComponent },
+      { path: 'registrar-evaluacion-legal-estudiante', component: RegistrarEvaluacionLegalEstudianteComponent },
+      { path: 'estudiante-participacion', component: EstudianteParticipacionComponent },
+      { path: 'registrar-participacion-estudiante', component: RegistrarParticipacionEstudianteComponent }
+      
+    ]
+  },
+
+  { path: '**', redirectTo: '' }
 ];
+

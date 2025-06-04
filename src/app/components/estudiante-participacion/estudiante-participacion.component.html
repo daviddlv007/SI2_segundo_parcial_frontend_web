@@ -1,0 +1,48 @@
+<!-- src/app/components/estudiante-participacion/estudiante-participacion.component.html -->
+
+<div class="container mx-auto p-4">
+  <h2 class="text-2xl font-semibold mb-4">
+    Matriz de Participaciones (Estudiante x Fecha)
+  </h2>
+
+  <div *ngIf="listaParticipaciones.length === 0 || fechasUnicas.length === 0" class="text-gray-600">
+    No hay registros de participación para mostrar.
+  </div>
+
+  <div *ngIf="listaParticipaciones.length > 0 && fechasUnicas.length > 0" class="overflow-auto">
+    <table class="min-w-full border-collapse">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="px-3 py-2 text-left border">Estudiante</th>
+          <th *ngFor="let fecha of fechasUnicas" class="px-3 py-2 text-left border">
+            {{ formatearFecha(fecha) }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listaParticipaciones" class="odd:bg-white even:bg-gray-50">
+          <td class="px-3 py-2 border font-medium">{{ item.estudiante.nombre }}</td>
+          <td *ngFor="let fecha of fechasUnicas" class="px-3 py-2 border text-center">
+            {{ obtenerTextoParticipacion(item.estudiante.id, fecha) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Botón para redirigir a registrar -->
+  <div class="flex justify-end mt-4">
+    <button
+      [routerLink]="['/profesor/registrar-participacion-estudiante']"
+      [queryParams]="{
+        gestion_academica_trimestral: gestion,
+        curso_id: cursoId,
+        profesor_id: profesorId,
+        materia_id: materiaId
+      }"
+      class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+    >
+      Registrar Participaciones
+    </button>
+  </div>
+</div>

@@ -5,7 +5,6 @@ import { PersonaService } from '../../services/persona/persona.service';
 import { Persona } from '../../models/persona/persona.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FilterService } from '../../services/filter/filter.service';
 import { PaginationService } from '../../services/pagination/pagination.service';
 
 @Component({
@@ -17,9 +16,7 @@ import { PaginationService } from '../../services/pagination/pagination.service'
 })
 export class PersonaComponent {
   personas: Persona[] = [];
-  personasFiltradas: Persona[] = [];
   personasPaginadas: Persona[] = [];
-  textoBusqueda: string = '';
   paginaActual: number = 1;
   elementosPorPagina: number = 10;
   totalPaginas: number = 0;
@@ -29,7 +26,6 @@ export class PersonaComponent {
   constructor(
     private personaService: PersonaService,
     private router: Router,
-    private filterService: FilterService,
     private paginationService: PaginationService
   ) {}
 
@@ -40,7 +36,6 @@ export class PersonaComponent {
   obtenerPersonas(): void {
     this.personaService.obtenerPersonas().subscribe((data) => {
       this.personas = data;
-      this.personasFiltradas = data;
       this.calcularPaginacion();
     });
   }
@@ -60,31 +55,25 @@ export class PersonaComponent {
   }
 
   confirmarEliminarPersona(id: number): void {
-    this.personaAEliminarId = id;  // Guardamos el id de la persona a eliminar
-    this.mostrarModal = true;  // Mostramos el modal
+    this.personaAEliminarId = id;
+    this.mostrarModal = true;
   }
 
   eliminarPersonaConfirmada(): void {
     if (this.personaAEliminarId !== null) {
-      this.eliminarPersona(this.personaAEliminarId);  // Realizamos la eliminación
-      this.cerrarModal();  // Cerramos el modal
+      this.eliminarPersona(this.personaAEliminarId);
+      this.cerrarModal();
     }
   }
 
   cerrarModal(): void {
-    this.mostrarModal = false;  // Ocultamos el modal
-    this.personaAEliminarId = null;  // Limpiamos el id de la persona a eliminar
-  }
-
-  filtrarPersonas(): void {
-    this.personasFiltradas = this.filterService.filtrar(this.personas, this.textoBusqueda);
-    this.paginaActual = 1;  // Resetear la página actual al buscar
-    this.calcularPaginacion();
+    this.mostrarModal = false;
+    this.personaAEliminarId = null;
   }
 
   calcularPaginacion(): void {
     const paginacion = this.paginationService.paginate(
-      this.personasFiltradas,
+      this.personas,
       this.paginaActual,
       this.elementosPorPagina
     );
@@ -103,7 +92,7 @@ export class PersonaComponent {
 
   actualizarPersonasPaginadas(): void {
     const paginacion = this.paginationService.paginate(
-      this.personasFiltradas,
+      this.personas,
       this.paginaActual,
       this.elementosPorPagina
     );

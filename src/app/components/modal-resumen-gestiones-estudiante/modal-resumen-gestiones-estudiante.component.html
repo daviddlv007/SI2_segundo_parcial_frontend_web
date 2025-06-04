@@ -1,0 +1,42 @@
+<div class="modal-backdrop" (click)="cerrarModal()"></div>
+
+<div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <button class="cerrar" (click)="cerrarModal()" aria-label="Cerrar modal">×</button>
+  <h3 id="modal-title">Resumen de Gestiones - Estudiante {{ estudianteId }}</h3>
+
+  <div *ngIf="promedioRendimientoReal !== null" class="promedio-general">
+    <strong>Promedio general de rendimiento académico real:</strong>
+    {{ promedioRendimientoReal | number:'1.2-2' }}
+  </div>
+
+  <div *ngIf="cargando" class="cargando">Cargando...</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <table *ngIf="!cargando && resumenGestiones.length > 0" class="tabla-resumen">
+    <thead>
+      <tr>
+        <th>Gestión</th>
+        <th>Nota Evaluación Legal</th>
+        <th>Asistencia</th>
+        <th>Participación</th>
+        <th>Rendimiento Real</th>
+        <th>Rendimiento Estimado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of resumenGestiones">
+        <td>{{ item.gestion }}</td>
+        <td>{{ item.promedio_nota_evaluacion_legal | number:'1.2-2' }}</td>
+        <td>{{ item.promedio_nota_asistencia | number:'1.2-2' }}</td>
+        <td>{{ item.promedio_nota_participacion | number:'1.2-2' }}</td>
+        <td>{{ item.promedio_rendimiento_academico_real | number:'1.2-2' }}</td>
+        <td>{{ item.promedio_rendimiento_academico_estimado | number:'1.2-2' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!cargando && resumenGestiones.length === 0 && !error" class="no-datos">
+    No hay datos para mostrar.
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<!-- src/app/components/inscripcion-trimestre/inscripcion-trimestre.component.html -->
+
+<!-- Modal de confirmación de eliminación -->
+<div *ngIf="mostrarModal" class="modal">
+  <div class="modal-content">
+    <h3>¿Estás seguro de que deseas eliminar esta Inscripción Trimestral?</h3>
+    <button (click)="eliminarConfirmado()">Confirmar</button>
+    <button (click)="cerrarModal()">Cancelar</button>
+  </div>
+</div>
+
+<div>
+  <h2>Inscripciones Trimestrales</h2>
+
+  <!-- Botón para registrar nueva Inscripción Trimestral -->
+  <button
+    (click)="irACrearInscripcionTrimestral()"
+    style="float: right; margin-bottom: 10px;"
+  >
+    Registrar Inscripción Trimestral
+  </button>
+
+  <!-- Tabla de inscripciones trimestrales -->
+  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>Curso</th>
+        <th>Materia</th>
+        <th>Profesor</th>
+        <th>Estudiante</th>
+        <th>Gestión Académica Trimestral</th>
+        <th>Nota Evaluación Legal</th>
+        <th>Nota Asistencia</th>
+        <th>Nota Participación</th>
+        <th>Rendimiento Académico Real</th>
+        <th>Rendimiento Académico Estimado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of inscripcionesTrimestrales">
+        <td>{{ t.cursoNombre || 'Cargando...' }}</td>
+        <td>{{ t.materiaNombre || 'Cargando...' }}</td>
+        <td>{{ t.profesorNombre || 'Cargando...' }}</td>
+        <td>{{ t.estudianteNombre || 'Cargando...' }}</td>
+        <td>{{ t.gestion_academica_trimestral }}</td>
+        <td>{{ t.nota_evaluacion_legal }}</td>
+        <td>{{ t.nota_asistencia }}</td>
+        <td>{{ t.nota_participacion }}</td>
+        <td>{{ t.rendimiento_academico_real }}</td>
+        <td>{{ t.rendimiento_academico_estimado }}</td>
+        <td>
+          <button (click)="irAEditarInscripcionTrimestral(t.id ?? 0)">Editar</button>
+          <button (click)="confirmarEliminar(t.id ?? 0)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div style="margin-top: 20px;">
+    <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">
+      Anterior
+    </button>
+    <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+    <button
+      (click)="cambiarPagina('next')"
+      [disabled]="paginaActual >= totalPaginas"
+    >
+      Siguiente
+    </button>
+  </div>
+</div>

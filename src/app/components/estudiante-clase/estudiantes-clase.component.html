@@ -1,0 +1,43 @@
+<div class="contenedor">
+  <h2 class="titulo">Estudiantes de la clase</h2>
+
+  <div class="botones">
+    <button class="boton" (click)="irA('estudiante-evaluacion-legal')">Calificaciones</button>
+    <button class="boton" (click)="irA('estudiante-asistencia')">Asistencias</button>
+    <button class="boton" (click)="irA('estudiante-participacion')">Participaciones</button>
+  </div>
+
+  <div class="metadatos">
+    <p><strong>Cantidad de estudiantes:</strong> {{ cantidadEstudiantes }}</p>
+    <p><strong>Promedio rendimiento:</strong> {{ promedioRendimiento }}</p>
+  </div>
+
+  <table class="tabla-estudiantes">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Rendimiento Estimado</th>
+        <th>Descripción Estimada</th>
+        <th>Datos Históricos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let estudiante of estudiantes; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ estudiante.nombre }}</td>
+        <td>{{ estudiante.rendimiento_academico_estimado }}</td>
+        <td>{{ descripcionRendimiento(estudiante.rendimiento_academico_estimado) }}</td>
+        <td>
+          <button class="ver-mas" (click)="abrirModal(estudiante.id)">Ver Datos</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-modal-resumen-gestiones-estudiante
+  *ngIf="mostrarModal"
+  [estudianteId]="estudianteSeleccionadoId"
+  (cerrar)="cerrarModal()">
+</app-modal-resumen-gestiones-estudiante>

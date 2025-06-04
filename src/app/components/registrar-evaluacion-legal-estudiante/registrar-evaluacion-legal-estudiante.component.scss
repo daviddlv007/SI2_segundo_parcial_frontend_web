@@ -1,0 +1,29 @@
+/* src/app/components/registrar-evaluacion-legal-estudiante/registrar-evaluacion-legal-estudiante.component.scss */
+
+.container {
+  max-width: 900px;
+}
+
+table {
+  width: 100%;
+  border: 1px solid #e5e7eb; /* gris claro */
+}
+
+th,
+td {
+  padding: 0.5rem;
+}
+
+thead th {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  font-weight: 600;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fafafa; /* bg-gray-50 */
+}
+
+input[type="number"] {
+  /* Centrar texto y quitar flechas si se desea */
+  text-align: right;
+}

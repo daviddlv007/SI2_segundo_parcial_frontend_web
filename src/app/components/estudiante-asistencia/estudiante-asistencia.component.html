@@ -1,0 +1,58 @@
+<!-- src/app/components/estudiante-asistencia/estudiante-asistencia.component.html -->
+
+<div class="container mx-auto p-4">
+  <h2 class="text-2xl font-semibold mb-4">
+    Matriz de Asistencias (Estudiante x Fecha)
+  </h2>
+
+  <!-- Si no hay datos o fechas -->
+  <div *ngIf="estudiantesAsistencias.length === 0 || fechasUnicas.length === 0" class="text-gray-600">
+    No hay registros de asistencia para mostrar en forma de matriz.
+  </div>
+<div class="container mx-auto p-4">
+  <!-- Botón que redirige al componente independiente -->
+  <div class="flex justify-end mb-4">
+    <button
+      [routerLink]="['/profesor/registrar-asistencia-estudiante']"
+      [queryParams]="{
+        gestion_academica_trimestral: gestion,
+        curso_id: cursoId,
+        profesor_id: profesorId,
+        materia_id: materiaId
+      }"
+      class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+    >
+      Registrar Asistencias
+    </button>
+  </div>
+
+  <!-- Tabla sólo si tenemos al menos 1 estudiante y 1 fecha -->
+  <div *ngIf="estudiantesAsistencias.length > 0 && fechasUnicas.length > 0" class="overflow-auto">
+    <table class="min-w-full border-collapse">
+      <thead>
+        <tr class="bg-gray-200">
+          <!-- Encabezado fijo para columna de estudiante -->
+          <th class="px-3 py-2 text-left border">Estudiante</th>
+          <!-- Una celda por cada fecha -->
+          <th *ngFor="let fecha of fechasUnicas" class="px-3 py-2 text-left border">
+            {{ formatearFecha(fecha) }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Una fila por cada estudiante -->
+        <tr *ngFor="let ea of estudiantesAsistencias" class="odd:bg-white even:bg-gray-50">
+          <!-- Nombre o ID – Nombre -->
+          <td class="px-3 py-2 border font-medium">
+            {{ ea.estudiante.nombre }}
+          </td>
+
+          <!-- Celdas de asistencias por fecha -->
+          <td *ngFor="let fecha of fechasUnicas" class="px-3 py-2 border text-center">
+            {{ obtenerTipoPor(ea.estudiante.id, fecha) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

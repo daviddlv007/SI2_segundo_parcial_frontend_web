@@ -7,7 +7,6 @@ import { Auto } from '../../models/auto/auto.model';
 import { Persona } from '../../models/persona/persona.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FilterService } from '../../services/filter/filter.service';
 import { PaginationService } from '../../services/pagination/pagination.service';
 
 @Component({
@@ -19,9 +18,7 @@ import { PaginationService } from '../../services/pagination/pagination.service'
 })
 export class AutoComponent {
   autos: Auto[] = [];
-  autosFiltrados: Auto[] = [];
   autosPaginados: Auto[] = [];
-  textoBusqueda: string = '';
   paginaActual = 1;
   elementosPorPagina = 5;
   totalPaginas = 0;
@@ -36,7 +33,6 @@ export class AutoComponent {
     private autoService: AutoService,
     private personaService: PersonaService,
     private router: Router,
-    private filterService: FilterService,
     private paginationService: PaginationService
   ) {}
 
@@ -46,23 +42,20 @@ export class AutoComponent {
 
   private cargarPersonasYAutos(): void {
     this.personaService.obtenerPersonas().subscribe((personas: Persona[]) => {
-      // creamos mapa id->nombre
       personas.forEach(p => {
         if (p.id != null) this.personaMap[p.id] = p.nombre;
       });
-      // luego cargamos los autos
       this.obtenerAutos();
     });
   }
 
   obtenerAutos(): void {
     this.autoService.obtenerAutos().subscribe((data: Auto[]) => {
-      // añadimos personaNombre a cada auto
       this.autos = data.map(a => ({
         ...a,
         personaNombre: this.personaMap[a.persona] ?? '–'
       }));
-      this.autosFiltrados = [...this.autos];
+      this.paginaActual = 1;
       this.calcularPaginacion();
     });
   }
@@ -96,15 +89,9 @@ export class AutoComponent {
     this.autoAEliminarId = null;
   }
 
-  filtrarAutos(): void {
-    this.autosFiltrados = this.filterService.filtrar(this.autos, this.textoBusqueda);
-    this.paginaActual = 1;
-    this.calcularPaginacion();
-  }
-
   calcularPaginacion(): void {
     const paginacion = this.paginationService.paginate(
-      this.autosFiltrados,
+      this.autos,
       this.paginaActual,
       this.elementosPorPagina
     );
@@ -123,7 +110,7 @@ export class AutoComponent {
 
   actualizarAutosPaginados(): void {
     const paginacion = this.paginationService.paginate(
-      this.autosFiltrados,
+      this.autos,
       this.paginaActual,
       this.elementosPorPagina
     );

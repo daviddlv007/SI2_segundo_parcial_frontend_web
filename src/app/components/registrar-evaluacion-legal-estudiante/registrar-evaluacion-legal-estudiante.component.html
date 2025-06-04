@@ -1,0 +1,102 @@
+<!-- src/app/components/registrar-evaluacion-legal-estudiante/registrar-evaluacion-legal-estudiante.component.html -->
+
+<div class="container mx-auto p-4 bg-white rounded-lg shadow-sm">
+  <h2 class="text-2xl font-semibold mb-4">Registrar Evaluaciones Legales</h2>
+
+  <!-- Mensajes de estado -->
+  <div *ngIf="mensajeError" class="mb-2 text-red-600">
+    {{ mensajeError }}
+  </div>
+  <div *ngIf="mensajeExito" class="mb-2 text-green-600">
+    {{ mensajeExito }}
+  </div>
+
+  <!-- Mientras no haya estudiantes -->
+  <div *ngIf="estudiantes.length === 0 && !mensajeError" class="text-gray-600">
+    Cargando lista de estudiantes...
+  </div>
+
+  <!-- Tabla con inputs de notas -->
+  <div *ngIf="estudiantes.length > 0">
+    <table class="min-w-full border-collapse mb-4">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-3 py-2 text-left border font-medium">Estudiante</th>
+          <!-- Columnas para cada nota de entrada -->
+          <th class="px-2 py-2 text-center border font-medium">Saber Prof.</th>
+          <th class="px-2 py-2 text-center border font-medium">Hacer Prof.</th>
+          <th class="px-2 py-2 text-center border font-medium">Ser Prof.</th>
+          <th class="px-2 py-2 text-center border font-medium">Decidir Prof.</th>
+          <th class="px-2 py-2 text-center border font-medium">Ser Estu.</th>
+          <th class="px-2 py-2 text-center border font-medium">Decidir Estu.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let est of estudiantes" class="odd:bg-white even:bg-gray-50">
+          <td class="px-3 py-2 border font-medium">{{ est.nombre }}</td>
+
+          <!-- Input numérico para cada nota de entrada -->
+          <td class="px-2 py-2 border text-center">
+            <input
+              type="number"
+              step="0.01"
+              [(ngModel)]="notasPorEstudiante[est.id].nota_saber_evaluacion_profesor"
+              class="w-20 text-right border rounded px-1 py-1"
+            />
+          </td>
+          <td class="px-2 py-2 border text-center">
+            <input
+              type="number"
+              step="0.01"
+              [(ngModel)]="notasPorEstudiante[est.id].nota_hacer_evaluacion_profesor"
+              class="w-20 text-right border rounded px-1 py-1"
+            />
+          </td>
+          <td class="px-2 py-2 border text-center">
+            <input
+              type="number"
+              step="0.01"
+              [(ngModel)]="notasPorEstudiante[est.id].nota_ser_evaluacion_profesor"
+              class="w-20 text-right border rounded px-1 py-1"
+            />
+          </td>
+          <td class="px-2 py-2 border text-center">
+            <input
+              type="number"
+              step="0.01"
+              [(ngModel)]="notasPorEstudiante[est.id].nota_decidir_evaluacion_profesor"
+              class="w-20 text-right border rounded px-1 py-1"
+            />
+          </td>
+          <td class="px-2 py-2 border text-center">
+            <input
+              type="number"
+              step="0.01"
+              [(ngModel)]="notasPorEstudiante[est.id].nota_ser_evaluacion_estudiante"
+              class="w-20 text-right border rounded px-1 py-1"
+            />
+          </td>
+          <td class="px-2 py-2 border text-center">
+            <input
+              type="number"
+              step="0.01"
+              [(ngModel)]="notasPorEstudiante[est.id].nota_decidir_evaluacion_estudiante"
+              class="w-20 text-right border rounded px-1 py-1"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Botón Guardar -->
+  <div class="flex justify-end">
+    <button
+      (click)="guardarTodasEvaluaciones()"
+      [disabled]="cargando || estudiantes.length === 0"
+      class="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+    >
+      {{ cargando ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</div>

@@ -1,5 +1,3 @@
-// src/app/components/perro/perro.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +12,7 @@ import { Perro } from '../../models/perro/perro.model';
 import { Persona } from '../../models/persona/persona.model';
 import { PersonaPerro } from '../../models/persona-perro/persona-perro.model';
 
-import { FilterService } from '../../services/filter/filter.service';
+// Quitar importación de FilterService
 import { PaginationService } from '../../services/pagination/pagination.service';
 
 @Component({
@@ -26,10 +24,9 @@ import { PaginationService } from '../../services/pagination/pagination.service'
 })
 export class PerroComponent implements OnInit {
   perros: Perro[] = [];
-  perrosFiltrados: Perro[] = [];
   perrosPaginados: Perro[] = [];
   personaPerros: PersonaPerro[] = [];
-  textoBusqueda = '';
+  // Eliminar textoBusqueda y perrosFiltrados
   paginaActual = 1;
   elementosPorPagina = 5;
   totalPaginas = 0;
@@ -39,7 +36,6 @@ export class PerroComponent implements OnInit {
 
   mostrarModalPersonas = false;
 
-  // mapa id->nombre
   private personaMap: Record<number, string> = {};
 
   constructor(
@@ -47,7 +43,7 @@ export class PerroComponent implements OnInit {
     private personaService: PersonaService,
     private personaPerroService: PersonaPerroService,
     private router: Router,
-    private filterService: FilterService,
+    // Eliminar FilterService de constructor
     private paginationService: PaginationService
   ) {}
 
@@ -67,7 +63,7 @@ export class PerroComponent implements OnInit {
   obtenerPerros(): void {
     this.perroService.obtenerPerros().subscribe(data => {
       this.perros = data;
-      this.perrosFiltrados = [...data];
+      // En vez de perrosFiltrados, paginar perros directamente
       this.calcularPaginacion();
     });
   }
@@ -83,7 +79,6 @@ export class PerroComponent implements OnInit {
       this.mostrarModalPersonas = true;
     });
   }
-  
 
   cerrarModalPersonas(): void {
     this.mostrarModalPersonas = false;
@@ -118,15 +113,11 @@ export class PerroComponent implements OnInit {
     this.router.navigate([`/perro-update/${id}`]);
   }
 
-  filtrarPerros(): void {
-    this.perrosFiltrados = this.filterService.filtrar(this.perros, this.textoBusqueda);
-    this.paginaActual = 1;
-    this.calcularPaginacion();
-  }
+  // Eliminar método filtrarPerros()
 
   calcularPaginacion(): void {
     const pag = this.paginationService.paginate(
-      this.perrosFiltrados, this.paginaActual, this.elementosPorPagina
+      this.perros, this.paginaActual, this.elementosPorPagina
     );
     this.totalPaginas = pag.totalPages;
     this.perrosPaginados = pag.paginatedData;

@@ -1,0 +1,37 @@
+<!-- src/app/components/cursos-materias/cursos-materias.component.html -->
+
+<div class="contenedor-cursos-materias">
+  <h2>Mis cursos y materias</h2>
+
+  <label for="gestionSelect">Seleccione gestión:</label>
+<select id="gestionSelect" [value]="gestionTrimestral" (change)="onGestionChange($event)">
+  <option *ngFor="let g of gestionesDisponibles" [value]="g">{{ g }}</option>
+</select>
+
+
+
+  <h3>Gestión seleccionada: {{ gestionTrimestral }}</h3>
+
+  <table class="tabla-cursos">
+    <thead>
+      <tr>
+        <th>Curso</th>
+        <th>Materia</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cursosMaterias">
+        <td>{{ item.curso_nombre }}</td>
+        <td>{{ item.materia_nombre }}</td>
+        <td>
+          <button (click)="seleccionarCurso(item)">Ver estudiantes</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="cursosMaterias.length === 0" class="sin-resultados">
+    No hay cursos asignados para esta gestión.
+  </div>
+</div>

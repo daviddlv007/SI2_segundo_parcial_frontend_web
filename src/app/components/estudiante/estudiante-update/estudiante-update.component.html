@@ -1,0 +1,186 @@
+<div class="form-container">
+  <h2>Actualizar Estudiante</h2>
+
+  <form #estudianteForm="ngForm" (ngSubmit)="actualizarEstudiante()">
+
+    <!-- Usuario (autocomplete) -->
+    <div class="form-group">
+      <label for="usuario">Usuario (autocomplete):</label>
+      <input
+  id="usuario"
+  type="text"
+  [(ngModel)]="terminoUsuario"
+  name="usuario"
+  placeholder="Buscar usuario por nombre..."
+  class="form-control"
+  autocomplete="off"
+/>
+<button type="button" (click)="buscarUsuarios()">Buscar</button>
+
+      <ul *ngIf="listaUsuarios.length > 0" class="autocomplete-list">
+        <li *ngFor="let u of listaUsuarios" (click)="seleccionarUsuario(u)">
+          {{ u.nombre }} ({{ u.correo }})
+        </li>
+      </ul>
+
+      <div *ngIf="terminoUsuario.length >= 2 && listaUsuarios.length === 0">
+        <small>No se encontraron usuarios. Intenta otro nombre.</small>
+      </div>
+    </div>
+
+    <!-- Fecha de nacimiento -->
+    <div class="form-group">
+      <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+      <input
+        id="fecha_nacimiento"
+        type="date"
+        [(ngModel)]="estudiante.fecha_nacimiento"
+        name="fecha_nacimiento"
+        required
+        #fecha="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="error-message">
+        <small *ngIf="fecha.errors?.['required']">La fecha de nacimiento es obligatoria.</small>
+      </div>
+    </div>
+
+    <!-- Género -->
+    <div class="form-group">
+      <label for="genero">Género:</label>
+      <input
+        id="genero"
+        type="text"
+        [(ngModel)]="estudiante.genero"
+        name="genero"
+        required
+        #genero="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="genero.invalid && (genero.dirty || genero.touched)" class="error-message">
+        <small *ngIf="genero.errors?.['required']">El género es obligatorio.</small>
+      </div>
+    </div>
+
+    <!-- Curso (autocomplete) -->
+    <div class="form-group">
+      <label for="curso">Curso (autocomplete):</label>
+      <input
+        id="curso"
+        type="text"
+        [(ngModel)]="terminoCurso"
+        name="cursoSearch"
+        placeholder="Buscar curso..."
+        required
+        #cursoSearch="ngModel"
+        class="form-control"
+        autocomplete="off"
+        (ngModelChange)="buscarCursos()"
+      />
+      <div *ngIf="cursoSearch.invalid && (cursoSearch.dirty || cursoSearch.touched)" class="error-message">
+        <small *ngIf="cursoSearch.errors?.['required']">Debes seleccionar un curso.</small>
+      </div>
+
+      <ul *ngIf="listaCursos.length > 0" class="autocomplete-list">
+        <li *ngFor="let c of listaCursos" (click)="seleccionarCurso(c)">
+          {{ c.nombre }} - {{ c.paralelo }}
+        </li>
+      </ul>
+
+      <div *ngIf="terminoCurso.length >= 2 && listaCursos.length === 0">
+        <small>No se encontraron cursos. Intenta otro término.</small>
+      </div>
+    </div>
+
+    <!-- Nombre del padre -->
+    <div class="form-group">
+      <label for="nombre_padre">Nombre del padre:</label>
+      <input
+        id="nombre_padre"
+        type="text"
+        [(ngModel)]="estudiante.nombre_padre"
+        name="nombre_padre"
+        required
+        #npadre="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="npadre.invalid && (npadre.dirty || npadre.touched)" class="error-message">
+        <small *ngIf="npadre.errors?.['required']">El nombre del padre es obligatorio.</small>
+      </div>
+    </div>
+
+    <!-- Nombre de la madre -->
+    <div class="form-group">
+      <label for="nombre_madre">Nombre de la madre:</label>
+      <input
+        id="nombre_madre"
+        type="text"
+        [(ngModel)]="estudiante.nombre_madre"
+        name="nombre_madre"
+        required
+        #nmadre="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="nmadre.invalid && (nmadre.dirty || nmadre.touched)" class="error-message">
+        <small *ngIf="nmadre.errors?.['required']">El nombre de la madre es obligatorio.</small>
+      </div>
+    </div>
+
+    <!-- CI del tutor -->
+    <div class="form-group">
+      <label for="ci_tutor">CI del tutor:</label>
+      <input
+        id="ci_tutor"
+        type="text"
+        [(ngModel)]="estudiante.ci_tutor"
+        name="ci_tutor"
+        required
+        #citutor="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="citutor.invalid && (citutor.dirty || citutor.touched)" class="error-message">
+        <small *ngIf="citutor.errors?.['required']">El CI del tutor es obligatorio.</small>
+      </div>
+    </div>
+
+    <!-- Dirección -->
+    <div class="form-group">
+      <label for="direccion">Dirección:</label>
+      <input
+        id="direccion"
+        type="text"
+        [(ngModel)]="estudiante.direccion"
+        name="direccion"
+        required
+        #dir="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="dir.invalid && (dir.dirty || dir.touched)" class="error-message">
+        <small *ngIf="dir.errors?.['required']">La dirección es obligatoria.</small>
+      </div>
+    </div>
+
+    <!-- Teléfono -->
+    <div class="form-group">
+      <label for="telefono">Teléfono:</label>
+      <input
+        id="telefono"
+        type="text"
+        [(ngModel)]="estudiante.telefono"
+        name="telefono"
+        required
+        #tel="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="tel.invalid && (tel.dirty || tel.touched)" class="error-message">
+        <small *ngIf="tel.errors?.['required']">El teléfono es obligatorio.</small>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="button-container">
+      <button type="submit" [disabled]="estudianteForm.invalid" class="submit-btn">Actualizar</button>
+      <button type="button" (click)="cancelar()" class="cancel-btn">Cancelar</button>
+    </div>
+  </form>
+</div>

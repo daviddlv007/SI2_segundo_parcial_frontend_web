@@ -8,8 +8,6 @@ import { Router } from '@angular/router';
 
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import { Usuario } from '../../models/usuario/usuario.model';
-import { FilterService } from '../../services/filter/filter.service';
-import { PaginationService } from '../../services/pagination/pagination.service';
 
 @Component({
   selector: 'app-usuario',
@@ -20,20 +18,15 @@ import { PaginationService } from '../../services/pagination/pagination.service'
 })
 export class UsuarioComponent {
   usuarios: Usuario[] = [];
-  usuariosFiltrados: Usuario[] = [];
-  usuariosPaginados: Usuario[] = [];
-  textoBusqueda: string = '';
   paginaActual: number = 1;
   elementosPorPagina: number = 10;
-  totalPaginas: number = 0;
-  mostrarModal: boolean = false;    
+  totalUsuarios: number = 0;
+  mostrarModal: boolean = false;
   usuarioAEliminarId: number | null = null;
 
   constructor(
     private usuarioService: UsuarioService,
-    private router: Router,
-    private filterService: FilterService,
-    private paginationService: PaginationService
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -41,19 +34,25 @@ export class UsuarioComponent {
   }
 
   obtenerUsuarios(): void {
-    this.usuarioService.obtenerUsuarios().subscribe(data => {
-      this.usuarios = data;
-      this.usuariosFiltrados = data;
-      this.calcularPaginacion();
+    this.usuarioService.obtenerUsuarios({
+      page: this.paginaActual,
+      page_size: this.elementosPorPagina
+    }).subscribe(response => {
+      this.usuarios = response.results;
+      this.totalUsuarios = response.count;
     });
   }
 
+  get totalPaginas(): number {
+    return Math.ceil(this.totalUsuarios / this.elementosPorPagina) || 1;
+  }
+
   irACrearUsuario(): void {
-    this.router.navigate(['/usuario-create']);
+    this.router.navigate(['admin/usuario-create']);
   }
 
   irAEditarUsuario(id: number): void {
-    this.router.navigate([`/usuario-update/${id}`]);
+    this.router.navigate([`admin/usuario-update/${id}`]);
   }
 
   confirmarEliminarUsuario(id: number): void {
@@ -74,40 +73,12 @@ export class UsuarioComponent {
     this.usuarioAEliminarId = null;
   }
 
-  filtrarUsuarios(): void {
-    this.usuariosFiltrados = this.filterService.filtrar(
-      this.usuarios,
-      this.textoBusqueda
-    );
-    this.paginaActual = 1;
-    this.calcularPaginacion();
-  }
-
-  calcularPaginacion(): void {
-    const pag = this.paginationService.paginate(
-      this.usuariosFiltrados,
-      this.paginaActual,
-      this.elementosPorPagina
-    );
-    this.totalPaginas = pag.totalPages;
-    this.usuariosPaginados = pag.paginatedData;
-  }
-
   cambiarPagina(direccion: 'previous' | 'next'): void {
-    this.paginaActual = this.paginationService.changePage(
-      this.paginaActual,
-      direccion,
-      this.totalPaginas
-    );
-    this.actualizarUsuariosPaginados();
-  }
-
-  actualizarUsuariosPaginados(): void {
-    const pag = this.paginationService.paginate(
-      this.usuariosFiltrados,
-      this.paginaActual,
-      this.elementosPorPagina
-    );
-    this.usuariosPaginados = pag.paginatedData;
+    if (direccion === 'previous' && this.paginaActual > 1) {
+      this.paginaActual--;
+    } else if (direccion === 'next' && this.paginaActual < this.totalPaginas) {
+      this.paginaActual++;
+    }
+    this.obtenerUsuarios();
   }
 }

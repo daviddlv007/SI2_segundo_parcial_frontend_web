@@ -1,0 +1,71 @@
+<!-- src/app/components/estudiante/estudiante.component.html -->
+
+<!-- Modal de confirmación -->
+<div *ngIf="mostrarModal" class="modal">
+  <div class="modal-content">
+    <h3>¿Estás seguro de que deseas eliminar este estudiante?</h3>
+    <button (click)="eliminarEstudianteConfirmado()">Confirmar</button>
+    <button (click)="cerrarModal()">Cancelar</button>
+  </div>
+</div>
+
+<div>
+  <h2>Estudiantes</h2>
+
+  <!-- Botón registrar -->
+  <button
+    (click)="irACrearEstudiante()"
+    style="float: right; margin-bottom: 10px;"
+  >
+    Registrar Estudiante
+  </button>
+
+  <!-- Tabla de estudiantes -->
+  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Fecha Nacimiento</th>
+        <th>Género</th>
+        <th>Curso</th>
+        <th>Padre</th>
+        <th>Madre</th>
+        <th>CI Tutor</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of estudiantes">
+        <td>{{ e.usuarioNombre || 'Cargando...' }}</td>
+        <td>{{ e.fecha_nacimiento }}</td>
+        <td>{{ e.genero }}</td>
+        <td>{{ e.cursoNombre || 'Cargando...' }}</td>
+        <td>{{ e.nombre_padre }}</td>
+        <td>{{ e.nombre_madre }}</td>
+        <td>{{ e.ci_tutor }}</td>
+        <td>{{ e.direccion }}</td>
+        <td>{{ e.telefono }}</td>
+        <td>
+          <button (click)="irAEditarEstudiante(e.id ?? 0)">Editar</button>
+          <button (click)="confirmarEliminarEstudiante(e.id ?? 0)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div style="margin-top: 20px;">
+    <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">
+      Anterior
+    </button>
+    <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+    <button
+      (click)="cambiarPagina('next')"
+      [disabled]="paginaActual >= totalPaginas"
+    >
+      Siguiente
+    </button>
+  </div>
+</div>

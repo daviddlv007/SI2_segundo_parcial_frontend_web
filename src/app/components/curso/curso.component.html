@@ -1,0 +1,55 @@
+<!-- Modal de confirmación -->
+<div *ngIf="mostrarModal" class="modal">
+  <div class="modal-content">
+    <h3>¿Estás seguro de que deseas eliminar este curso?</h3>
+    <button (click)="eliminarCursoConfirmado()">Confirmar</button>
+    <button (click)="cerrarModal()">Cancelar</button>
+  </div>
+</div>
+
+<div>
+  <h2>Cursos</h2>
+
+  <!-- Botón registrar -->
+  <button
+    (click)="irACrearCurso()"
+    style="float: right; margin-bottom: 10px;"
+  >
+    Registrar
+  </button>
+
+  <!-- Tabla de cursos -->
+  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Paralelo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of cursos">
+        <td>{{ c.nombre }}</td>
+        <td>{{ c.paralelo }}</td>
+        <td>
+          <button (click)="irAEditarCurso(c.id ?? 0)">Editar</button>
+          <button (click)="confirmarEliminarCurso(c.id ?? 0)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div style="margin-top: 20px;">
+    <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">
+      Anterior
+    </button>
+    <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+    <button
+      (click)="cambiarPagina('next')"
+      [disabled]="paginaActual >= totalPaginas"
+    >
+      Siguiente
+    </button>
+  </div>
+</div>

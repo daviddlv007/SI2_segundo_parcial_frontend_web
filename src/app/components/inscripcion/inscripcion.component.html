@@ -1,0 +1,73 @@
+<!-- src/app/components/inscripcion/inscripcion.component.html -->
+
+<!-- Modal de confirmación de eliminación -->
+<div *ngIf="mostrarModal" class="modal">
+  <div class="modal-content">
+    <h3>¿Estás seguro de que deseas eliminar esta inscripción?</h3>
+    <button (click)="eliminarInscripcionConfirmado()">Confirmar</button>
+    <button (click)="cerrarModal()">Cancelar</button>
+  </div>
+</div>
+
+<div>
+  <h2>Inscripciones</h2>
+
+  <!-- Botón para registrar nueva inscripción -->
+  <button
+    (click)="irACrearInscripcion()"
+    style="float: right; margin-bottom: 10px;"
+  >
+    Registrar Inscripción
+  </button>
+
+  <!-- Tabla de inscripciones -->
+  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>Curso</th>
+        <th>Materia</th>
+        <th>Profesor</th>
+        <th>Estudiante</th>
+        <th>Gestión Académica Anual</th>
+        <th>Nota Evaluación Legal</th>
+        <th>Nota Asistencia</th>
+        <th>Nota Participación</th>
+        <th>Rendimiento Académico Real</th>
+        <th>Rendimiento Académico Estimado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of inscripciones">
+        <td>{{ i.cursoNombre || 'Cargando...' }}</td>
+        <td>{{ i.materiaNombre || 'Cargando...' }}</td>
+        <td>{{ i.profesorNombre || 'Cargando...' }}</td>
+        <td>{{ i.estudianteNombre || 'Cargando...' }}</td>
+        <td>{{ i.gestion_academica_anual }}</td>
+        <td>{{ i.nota_evaluacion_legal }}</td>
+        <td>{{ i.nota_asistencia }}</td>
+        <td>{{ i.nota_participacion }}</td>
+        <td>{{ i.rendimiento_academico_real }}</td>
+        <td>{{ i.rendimiento_academico_estimado }}</td>
+        <td>
+          <button (click)="irAEditarInscripcion(i.id ?? 0)">Editar</button>
+          <button (click)="confirmarEliminarInscripcion(i.id ?? 0)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div style="margin-top: 20px;">
+    <button (click)="cambiarPagina('previous')" [disabled]="paginaActual === 1">
+      Anterior
+    </button>
+    <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+    <button
+      (click)="cambiarPagina('next')"
+      [disabled]="paginaActual >= totalPaginas"
+    >
+      Siguiente
+    </button>
+  </div>
+</div>

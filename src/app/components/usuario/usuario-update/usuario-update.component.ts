@@ -35,12 +35,12 @@ export class UsuarioUpdateComponent implements OnInit {
   actualizarUsuario(): void {
     if (this.usuario.id) {
       this.usuarioService.actualizarUsuario(this.usuario.id, this.usuario).subscribe(() => {
-        this.router.navigate(['/usuario']); // Redirige tras la actualización
+        this.router.navigate(['admin/usuario']); // Redirige tras la actualización
       });
     }
   }
 
   cancelar(): void {
-    this.router.navigate(['/usuario']);
+    this.router.navigate(['admin/usuario']);
   }
 }

@@ -29,11 +29,11 @@ export class UsuarioCreateComponent {
 
   crearUsuario(): void {
     this.usuarioService.crearUsuario(this.usuario).subscribe(() => {
-      this.router.navigate(['/usuario']);
+      this.router.navigate(['admin/usuario']);
     });
   }
 
   cancelar(): void {
-    this.router.navigate(['/usuario']);
+    this.router.navigate(['admin/usuario']);
   }
 }
