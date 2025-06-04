@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Construir proyecto Angular
-        run: npm run build -- --configuration production --base-href /SI2_primer_parcial_frontend_web/
+        run: npm run build -- --configuration production --base-href /SI2_segundo_parcial_frontend_web/
 
       - name: Preparar archivos para GitHub Pages
         run: cp ./dist/frontend/browser/index.html ./dist/frontend/browser/404.html
